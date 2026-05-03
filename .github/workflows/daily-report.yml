@@ -44,12 +44,15 @@ jobs:
             TARGET=$(TZ=Asia/Taipei date +%Y-%m-%d)
             echo "target=$TARGET" >> $GITHUB_OUTPUT
           fi
-          echo "Date: $(cat $GITHUB_OUTPUT | grep target | cut -d= -f2)"
 
-      - name: Fetch papers from PubMed
-        run: node scripts/fetch_papers.mjs --days 7 --max-papers 40 --output papers.json --history docs/pmid_history.json
+      - name: Fetch papers (PubMed + Crossref + Semantic Scholar)
+        run: |
+          node scripts/fetch_papers.mjs \
+            --days 14 \
+            --max-papers 80 \
+            --output papers.json \
+            --history docs/pmid_history.json
         continue-on-error: true
-        timeout-minutes: 10
 
       - name: Check papers data
         id: papers
@@ -70,7 +73,7 @@ jobs:
         run: node scripts/generate_report.mjs --input papers.json --output docs/did-${{ steps.date.outputs.target }}.html --api-key "$ZHIPU_API_KEY"
         timeout-minutes: 15
 
-      - name: Update PMID history
+      - name: Update history
         run: node scripts/fetch_papers.mjs --update-history papers.json --history docs/pmid_history.json
         continue-on-error: true
 
