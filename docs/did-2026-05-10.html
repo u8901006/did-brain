@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年5月10日</title>
+<meta name="description" content="2026年5月10日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年5月10日</span>
+        <span class="badge badge-count">📊 24 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + Zhipu AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日文獻涵蓋DID鑑別診斷工具驗證、大規模族群差異分析、團體治療成效與解離症狀篩檢等多元面向，其中效度量表組合運用與「尋找穩固根基」團體方案最具臨床轉譯價值。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">🔍</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>記憶偽裝測驗與米勒法醫評估症狀測驗在區分臨床與模擬DID症狀中的多變量應用</h3>
+          <p class="journal-source">Psychological Trauma: Theory, Research, Practice, and Policy · Multivariable utility of the test of memory malingering and miller forensic assessment of symptoms test in distinguishing clinical and simulated dissociative identity disorder symptoms.</p>
+          <p>將TOMM-1（≤41分）與M-FAST（≥6分）兩種效度量表串聯使用，可將偽裝DID的偽陽性率從39%降至10%，同時維持92%敏感度，為法醫與臨床鑑別提供明確循證依據。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">31名臨床診斷DID案主與51名被指示模擬DID的大學生</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">TOMM-1與M-FAST雙量表串聯評估（使用既有切截點）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">單獨使用TOMM-1或M-FAST</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">偵測模擬DID症狀的敏感度達92%、特異度提升至90%（偽陽性率從39%降至10%）</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">評估診斷</span>
+            <a href="https://www.semanticscholar.org/paper/5ccf7c98ccbf0f01a3f9c06e46808b0f8e75e412" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#2</span>
+            <span class="emoji-icon">🌍</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>國際樣本中DID症狀的性別與種族變異性</h3>
+          <p class="journal-source">Journal of Trauma & Dissociation · Gender and Racial Variability of Dissociative Identity Disorder Symptoms in an International Sample.</p>
+          <p>針對5,589名一般族群的大型調查發現，邊緣化種族群體與性別酷兒者的DID盛行率及身份解離症狀嚴重度顯著較高，挑戰現有研究樣本的代表性不足問題。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">5,589名透過公民科學平台招募的一般成人</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">Multiscale Dissociation Inventory (MDI) 自評量表與人口學問卷</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同種族、性別、地理區域間的比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">邊緣化種族群體之暫定DID盛行率與身份解離分數顯著高於白人；性別酷兒者盛行率高於男女雙性別</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">創傷</span><span class="tag">成人精神醫學</span>
+            <a href="https://www.semanticscholar.org/paper/69cc5d40e0f9211430dfd1642fe0f6e4ecb79db4" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#3</span>
+            <span class="emoji-icon">🤝</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>「感覺像一個安全的容器」：解離症成人參與「尋找穩固根基」團體的經驗</h3>
+          <p class="journal-source">Psychological Trauma: Theory, Research, Practice, and Policy · "It feels like a safe container": Experiences of finding solid ground groups for adults with dissociative disorders.</p>
+          <p>72名解離症案主參與31週「尋找穩固根基」心理教育團體後，主觀報告顯示自我覺察、內在系統溝通、情緒調節與自我慈悲顯著提升，孤立感與羞恥感降低。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">72名罹患解離症或PTSD解離亞型的成人（81%女性），伴多重共病</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">31週、每週90分鐘的「尋找穩固根基」心理教育團體（作為個別心理治療的輔助）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照組（主題性質性分析）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">提升自我覺察、內在系統溝通、情緒調節、希望感與整體功能；降低孤立感、羞恥自責、解離與創傷症狀</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">心理治療</span><span class="tag">創傷</span>
+            <a href="https://www.semanticscholar.org/paper/c5757049aad1e68a564dba1124efc9a9d9d554ca" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#4</span>
+            <span class="emoji-icon">📊</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>憂鬱與焦慮疾患中的解離症狀：真實門診樣本的盛行率與臨床相關因素</h3>
+          <p class="journal-source">Journal of Psychiatric Research · Dissociative symptoms in depressive and anxiety disorders: prevalence and clinical correlates in a real-world outpatient sample.</p>
+          <p>在133名憂鬱與/或焦慮疾患門診案主中，12%達心理形式解離臨床閾值、18.8%達身體形式解離閾值，支持常規解離篩檢應納入精神科評估流程。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">133名接受藥物治療前的憂鬱症與/或焦慮症成人門診案主</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">DES-R與SDQ-20量表評估心理形式與身體形式解離</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同解離亞型與憂鬱/焦慮嚴重度的關聯分析</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">身體形式解離經由焦慮間接與憂鬱相關（中介效應）；心理形式解離與憂鬱、焦慮皆獨立相關且呈非線性飽和效應</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">身體化解離</span><span class="tag">評估診斷</span>
+            <a href="https://www.semanticscholar.org/paper/cbc579b73d3ae77290784d557d77f4aaefe58b33" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#5</span>
+            <span class="emoji-icon">⚠️</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>女性青少年情緒能力、解離症狀與邊緣性人格特質在非自殺性自傷中的關係</h3>
+          <p class="journal-source">Child and Adolescent Psychiatry and Mental Health · Relationship between emotional competence, dissociative symptoms and borderline personality disorder traits in female adolescents engaging in non-suicidal self-injury</p>
+          <p>高情緒能力在低至中度BPD特質時對自傷具保護作用，但在高BPD特質下反而與自傷增加相關，顯示解離傾向與BPD特質會調節情緒能力的效果方向。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">93名12-21歲女性青少年臨床樣本（47%符合DSM-5 NSSI診斷）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">情緒能力、解離症狀與BPD特質之自評與半結構式訪談評估</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同解離程度與BPD特質水準下情緒能力與NSSI的關聯</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">高解離水準下情緒能力具保護作用；高BPD特質下情緒能力反而與NSSI增加相關（矛盾效應）</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">兒童青少年</span><span class="tag">自傷自殺</span>
+            <a href="https://www.semanticscholar.org/paper/39188533a6b34e414a63c47397d61f841ec14dd1" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#6</span>
+            <span class="emoji-icon">🧘</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>失自我感與失真實感及冥想誘發的自我改變狀態：橫斷調查</h3>
+          <p class="journal-source">Scientific Reports · A cross-sectional survey on depersonalization/derealization and meditation-induced alterations of the self.</p>
+          <p>冥想誘發的DPDR樣狀態在現象學上與臨床DPDR相似，但多被經驗為較正向、有意義且具靈性價值，顯示情境脈絡深刻影響解離經驗的評價。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">60名因冥想觸發DPDR樣狀態者（MEDT）與61名因其他因素觸發者（NMEDT）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">五份量表（含Cambridge Depersonalisation Scale）與經驗描述問卷</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">冥想觸發組與非冥想觸發組在症狀量表與經驗評價上的差異</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">兩組在CDS總分無顯著差異，但MEDT組將經驗評價為顯著較正向、愉悅且具靈性意義</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">失自我感</span><span class="tag">失真實感</span><span class="tag">解離症</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42103836/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#7</span>
+            <span class="emoji-icon">⚡</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>簡短症候學訓練在區分功能性/解離性癲癇與癲癇發作中的有效性</h3>
+          <p class="journal-source">Epilepsy & Behavior · Effectiveness of brief semiological training in distinguishing functional/dissociative seizures from epileptic seizures.</p>
+          <p>僅15分鐘針對10項功能性解離性癲癇症候學特徵的結構化訓練，即可將神經科住院醫師的鑑別準確度從77%提升至89%。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">45名無癲癇或功能性神經障礙專門訓練的年輕神經科住院醫師</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">15分鐘針對10項FDS症候學特徵的教育課程</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">訓練前後觀看30段發作影片的鑑別準確度</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">FDS辨識準確度從77%提升至89%（p<0.001），癲癇辨識準確度維持穩定（54%→53%）</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">評估診斷</span>
+            <a href="https://www.semanticscholar.org/paper/f418cc062ecd8a041b26e3e3e94f9abab0e641ba" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#8</span>
+            <span class="emoji-icon">🛋️</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>解離性身份障礙合併憂鬱症與邊緣性人格障礙的長期心理動力治療</h3>
+          <p class="journal-source">Psychodynamic Psychiatry · Long-Term Psychodynamic Psychotherapy With a Patient With Dissociative Identity Disorder, Major Depressive Disorder, and Borderline Personality Disorder.</p>
+          <p>本案例說明一位最初被診斷為BPD與重鬱症的年輕女性，重新確診為合併DID後，以心理動力治療為核心輔以放鬆技巧的治療歷程，強調DID確診如何重塑治療計畫。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">一名合併DID、重鬱症與BPD的年輕女性案主</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">長期心理動力治療輔助呼吸與放鬆練習</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照組（案例報告）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">DID確診引導治療計畫重新調整，探討解離的心理動力學與關係基礎</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">心理治療</span><span class="tag">案例報告</span>
+            <a href="https://www.semanticscholar.org/paper/45f4c93b06329ca307904b75af6a81422382cce2" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">📚</span>其他值得關注的文獻</div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">❓</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>DID：我是真實的嗎？</h3>
+          <p class="journal-source">International Journal For Multidisciplinary Research</p>
+          <p>混合方法研究支持DID為與童年創傷密切相關的真實心理疾患，但調查顯示大眾因流行媒體呈現而對DID存在嚴重誤解，可能加劇案主的自我懷疑。</p>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">童年創傷</span>
+            <a href="https://www.semanticscholar.org/paper/a783e1a7844a57ad28f89d144c393dec21001cf9" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>DID合併憂鬱症青少年接受電痙攣治療：案例報告</h3>
+          <p class="journal-source">Frontiers in Psychiatry</p>
+          <p>一名15歲DID合併憂鬱症且有高自殺風險的青少年女性，在接受ECT合併藥物治療後，不同人格狀態整合且憂鬱症狀緩解，僅出現輕微頭痛與短暫記憶障礙。</p>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">兒童青少年</span><span class="tag">藥物治療</span><span class="tag">案例報告</span>
+            <a href="https://www.semanticscholar.org/paper/e5eb136a51b160bc4c2f4a013694efdd9a828a4b" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🎭</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>青少年模擬的解離性身份障礙表現：案例報告與臨床反思</h3>
+          <p class="journal-source">Journal of Indian Association for Child and Adolescent Mental Health</p>
+          <p>一名17歲有性侵與霸凌背景的青少年呈現五個不同人格狀態，經45次Janet階段取向治療後顯著改善，被概念化為「自我模擬DID」，有別於真實DID與裝病。</p>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">兒童青少年</span><span class="tag">心理治療</span><span class="tag">案例報告</span>
+            <a href="https://www.semanticscholar.org/paper/a31bb5b1cca406d02f449b9596dd278b2b8d2873" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>精神活性物質在解離性身份障礙發病中的角色：酒癮與藥癮者之比較研究</h3>
+          <p class="journal-source">Alcoholism Treatment Quarterly</p>
+          <p>探討精神活性物質使用與DID發病之間關聯的比較研究（摘要未提供）。</p>
+          <div class="card-footer">
+            <span class="tag">DID</span>
+            <a href="https://www.semanticscholar.org/paper/8c813e995f12330453c862926709ea345ae8f4c7" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">👻</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>出神與附身障礙症伴解離-精神病性重疊：臨床案例報告</h3>
+          <p class="journal-source">Cureus</p>
+          <p>一名無精神科病史的年輕女性出現幻覺、語無倫次與攻擊行為，經抗精神病劑與苯二氮平類藥物治療後穩定，強調文化脈絡對症狀表現的影響與生物心理社會評估的重要性。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">案例報告</span>
+            <a href="https://www.semanticscholar.org/paper/b112b6453ea930fda0032c0de4e21d283552a87b" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🏫</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>鄉村主流學校中支持DID學習者的治療介入</h3>
+          <p class="journal-source">Journal of Educational and Social Research</p>
+          <p>探討南非融合教育政策下，鄉村主流學校支援DID學習者的各項治療介入與支持系統，強調教師、心理學家與家庭協作的重要性。</p>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">兒童青少年</span>
+            <a href="https://www.semanticscholar.org/paper/1254298fcc1fb7c89d155928f5ee541dea362971" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📱</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>社群媒體參與對DID個案自我整合的影響</h3>
+          <p class="journal-source">Schizophrenia Bulletin</p>
+          <p>120名DID案主分為主動參與、被動瀏覽與限制使用三組，六個月後主動引導組DES分數顯著下降（69.3→41.5）、社會支持分數顯著上升，顯示有引導的社群媒體使用可能輔助自我整合。</p>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">心理治療</span>
+            <a href="https://www.semanticscholar.org/paper/f766c1fad726d69ec73a42423f9f4c18e021d4d9" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">文化和</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>文化信仰脈絡下的自殘異物插入與解離症：案例報告</h3>
+          <p class="journal-source">Indian Journal of Social Psychiatry</p>
+          <p>一名20歲女性因父親宗教信仰驅使而反覆將鐵釘插入前臂，家庭將其視為附身現象而求助宗教儀式，後診斷為出神與附身型解離症，經精神科治療改善但家屬信念仍影響其疾病認知。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">案例報告</span>
+            <a href="https://www.semanticscholar.org/paper/02e2bdaaddcddc771f0d237ad4d16e47320858d6" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>類鯨胺酮治療中治療期望與解離症狀在抗鬱劑反應中的獨特角色</h3>
+          <p class="journal-source">（預印本）</p>
+          <p>探討常規照護中類鯨胺酮治療時，治療期望與解離症狀對抗鬱反應的獨立貢獻（摘要未提供）。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">藥物治療</span>
+            <a href="https://www.semanticscholar.org/paper/dba0ddcf2930681bb666f6675e63e0d65a80ea31" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📋</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>健康信念模型與解離症案主的治療遵從性</h3>
+          <p class="journal-source">The Primary Care Companion For CNS Disorders</p>
+          <p>以健康信念模型探討解離症案主治療遵從性之研究（摘要未提供）。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span>
+            <a href="https://www.semanticscholar.org/paper/7e6a49ab462376323cd14cd90982950756b8cd83" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🚶</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>解離性漫遊症是否一定需要創傷事件？一則與慢性心理社會壓力及照顧負荷相關的老年案例</h3>
+          <p class="journal-source">Turkish Journal of Traumatic Stress</p>
+          <p>一名56歲女性在無急性創傷事件下發生解離性漫遊，拒絕透露身分且行為紊乱，強調老年族群中解離性漫遊可能被誤判為精神病性障礙。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">成人精神醫學</span><span class="tag">案例報告</span>
+            <a href="https://www.semanticscholar.org/paper/fc2a77086a26379affb49ddceb11fd5efac8f51b" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🍺</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>情緒調節障礙與解離在酒癮個案中介導失樂症與憂鬱症狀的關聯</h3>
+          <p class="journal-source">Alcohol and Alcoholism</p>
+          <p>在136名酒癮住院個案中，情緒調節困難與解離症狀串聯中介了失樂症與憂鬱嚴重度的關聯，但此中介路徑在健康對照組中不存在，顯示解離可作為酒癎治療的潛在介入目標。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">身體化解離</span>
+            <a href="https://www.semanticscholar.org/paper/6cd20f99b115107edbdbc44f74d003d2ebfcaa44" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>從經驗到症狀：解離動力學在精神分裂症譜系疾病病因病理中的角色</h3>
+          <p class="journal-source">Психология и Психотехника</p>
+          <p>40名精神分裂症譜系患者的研究顯示，不同童年創傷類型透過圍創傷期解離中介不同精神病性症狀，性暴力創傷與最高解離水準相關。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">童年創傷</span>
+            <a href="https://www.semanticscholar.org/paper/6671f7fa1fab8e5af6d95f4163f325444992ceb5" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📄</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>揭開早期童年虐待難以承受的真相：DID案例研究</h3>
+          <p class="journal-source">European Journal of Trauma & Dissociation</p>
+          <p>DID案例研究（摘要未提供）。</p>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">童年創傷</span><span class="tag">案例報告</span>
+            <a href="https://www.semanticscholar.org/paper/ee9fa364ef2700c7ee679c48020c99435269675f" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">✉️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>揭露可能未診斷DID的遺書主題分析：案例報告</h3>
+          <p class="journal-source">Mortality</p>
+          <p>透過遺書主題分析回溯性揭露可能未被診斷的DID案例（摘要未提供）。</p>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">自傷自殺</span><span class="tag">案例報告</span>
+            <a href="https://www.semanticscholar.org/paper/7c642c16ddaad5f9b1efe14913e6f6628805fac0" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📚</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>DID：臨床與診斷特徵分析性回顧</h3>
+          <p class="journal-source">Al-Anbar University Journal For Humanities</p>
+          <p>DID臨床與診斷特徵的分析性回顧（摘要未提供）。</p>
+          <div class="card-footer">
+            <span class="tag">DID</span><span class="tag">系統性回顧</span>
+            <a href="https://www.semanticscholar.org/paper/e901b83ac6d0cfa0694bf7a3cc4e6f775af1f576" target="_blank">PubMed →</a>
+          </div>
+        </div></div>
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+            <div class="topic-row">
+              <span class="topic-name">DID</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">10</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">解離症</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:70%"></div></div>
+              <span class="topic-count">7</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">兒童青少年</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:40%"></div></div>
+              <span class="topic-count">4</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">案例報告</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:70%"></div></div>
+              <span class="topic-count">7</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">評估診斷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:40%"></div></div>
+              <span class="topic-count">4</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">心理治療</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:30%"></div></div>
+              <span class="topic-count">3</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">童年創傷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:30%"></div></div>
+              <span class="topic-count">3</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">自傷自殺</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:20%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">身體化解離</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:20%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">失自我感</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:10%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">失真實感</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:10%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">藥物治療</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:20%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">成人精神醫學</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:20%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">創傷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:20%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">系統性回顧</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:10%"></div></div>
+              <span class="topic-count">1</span>
+            </div></div>
+
+  <div class="keywords-section section"><div class="section-title"><span class="section-icon">🏷️</span>關鍵字</div><div class="keywords"><span class="keyword">DID鑑別診斷</span><span class="keyword">效度量表</span><span class="keyword">族群差異</span><span class="keyword">團體心理教育</span><span class="keyword">解離篩檢</span><span class="keyword">情緒能力</span><span class="keyword">DPDR</span><span class="keyword">功能性癲癇</span></div></div>
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：glm-5-turbo</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
