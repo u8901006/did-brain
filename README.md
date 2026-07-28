@@ -1,11 +1,11 @@
 # DID Brain
 
-**解離性身份障礙（DID）文獻日報** — 每日自動從 PubMed 抓取最新 DID / 解離症研究文獻，由 Zhipu AI 進行摘要、分類與分析，生成繁體中文日報。
+**解離性身份障礙（DID）文獻日報** — 每日自動從 PubMed 抓取最新 DID / 解離症研究文獻，由 NVIDIA AI 進行摘要、分類與分析，生成繁體中文日報。
 
 ## 架構
 
 - **PubMed E-utilities API** — 抓取最新 DID 相關文獻
-- **Zhipu AI (GLM-5-Turbo)** — AI 摘要、PICO 分析、分類
+- **NVIDIA Nemotron** — AI 摘要、PICO 分析、分類
 - **GitHub Actions** — 每日台北時間 06:00 自動執行
 - **GitHub Pages** — 靜態網頁部署
 
@@ -29,7 +29,7 @@
 - Node.js 24（純 ESM 模組）
 - 無外部依賴（使用 Node.js 內建 fetch）
 - JSON 容錯：四層解析策略
-- 模型 Fallback：GLM-5-Turbo → GLM-4.7 → GLM-4.7-Flash
+- 模型 Fallback：Nemotron 3 Super → Nemotron 3 Nano
 - PMID 歷史去重機制
 
 ## 連結
