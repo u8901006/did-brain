@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年9月16日</title>
+<meta name="description" content="2026年9月16日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年9月16日</span>
+        <span class="badge badge-count">📊 32 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日文獻整體聚焦於光學、材料科學與生物醫學交叉領域，僅一篇論文（PMID:42743384）間接涉及創傷與解離相關概念（去人格化），但無直接探討DID或解離性身份障礙。整體趨勢顯示DID/解離症領域今日缺乏新發表臨床或基礎研究文獻。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">⚕️</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>性侵犯護士檢查師（SANEs）在南卡羅萊納州上州地區的職業倦怠與二次創傷壓力評估</h3>
+          <p class="journal-source">Journal of forensic nursing · Assessing Burnout and Secondary Traumatic Stress Among Sexual Assault Nurse Examiners in the Upstate of South Carolina.</p>
+          <p>儘管未達 burnout 或嚴重二次創傷壓力診斷門檻，證護人員仍顯著出現去人格化及低個人成就感，未認證人員情緒耗竭與去人格化較嚴重，提示解離症狀在創傷照護工作者中普遍存在，需早期干預。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">南卡羅萊納州上州地區的性侵犯護士檢查師（SANEs），共11位參與者</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">橫斷式問卷調查，包含人口統計、職業問卷、Maslach Burnout Inventory-Human Services Survey（醫療人員版）與 Secondary Traumatic Stress Scale</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">認證 vs 未認證 SANEs；低 vs 高案件量</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">未達 burnout 或嚴重 STS 診斷標準，但低個人成就及變異程度的去人格化常見；未認證 SANEs 情緒耗竭與去人格化顯著較高；案件量增加與侵入症狀正相關</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">失自我感</span><span class="tag">創傷</span><span class="tag">評估診斷</span><span class="tag">心理治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42743384/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">📚</span>其他值得關注的文獻</div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Experiments reveal acousto-optic polarization-controlled LP-mode switching in optical fibers.</h3>
+          <p class="journal-source">Optics letters</p>
+          <p>在特定光纖長度下，聲光共振可使正交偏振的LP模式互換位置，同時保持orthogonal模式不變，驗證了先前理論模型，並展示其類比CNOT邏輯門功能。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42743513/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>無鉛鈣鈦礦單晶中的光電共調神經形態突觸，具備注意與修剪功能。</h3>
+          <p class="journal-source">Optics letters</p>
+          <p>使用無鉛雙鈣鈦礦Cs2TiCl6單晶製造具光電雙調功能的神經形態突觸，透過特定異步電光調控序列實現三種生物模擬高階視覺認知模式，使神經網路圖案識別準確率從31.95%提升至最高86.52%。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42743512/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">❤️</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>導線型起搏器在胸部物理治療中因加速計器誤觸導致心率過速：VDD模式下的隱藏風險。</h3>
+          <p class="journal-source">Journal of cardiovascular electrophysiology</p>
+          <p>一位85歲使用Micra AV2導線型起搏器的患者，在左側胸部叩擊物理治療時，因加速計器誤將運動訊號視為心跳而觸發VDD模式切換至VVIR pacing，導致心率超過100 bpm；關閉模式切換可防止此現象。</p>
+          <div class="card-footer">
+            <span class="tag">住院照護</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42743401/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧲</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>強烈驅動下反鐵磁體中的非擾動非線性磁振子動力學。</h3>
+          <p class="journal-source">Proceedings of the National Academy of Sciences of the United States of America</p>
+          <p>利用二維太赫兹光譜和波導增強場，在強烈驅動下觀察到反鐵磁體中高階磁振子相干性的出現，劃清了從擾動到非擾動磁振子非線性 regime 的轉證界線，證明此行為源於磁自由能景觀的內在非調和性。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42743288/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>刺激誘導之銅(I)簇異構體間可逆轉換，伴隨發光顏色從綠變紅。</h3>
+          <p class="journal-source">Proceedings of the National Academy of Sciences of the United States of America</p>
+          <p>透過雙功能膦-炔配體合成八核銅(I)簇Cu8-1，其可在溶劑或溫度刺激下逆轉轉換為Cu8-2異構體，過程可經NMR監測，並伴隨發光峰從520 nm（綠）位移至625 nm（紅），提供研究結構-性質關係的理想平台。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42743283/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🍷</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>酒精對內皮塑性的雙相效應：經由調控內皮間質轉型影響動脈病變。</h3>
+          <p class="journal-source">American journal of physiology. Heart and circulatory physiology</p>
+          <p>低至中等濃度ethanol (5–25 mM) 抑制細胞因子和缺氧誘導的內皮間質轉型（EndMT），保護內皮表型；但高濃度ethanol (50–100 mM) 無效或加劇EndMT。動物實驗顯示，每日適量飲酒顯著減少頸動脈結節性增生，而 episodic binge 飲酒則促進病變。揭示酒精透過調節內皮可塑性，以雙相方式影響血管疾病風險。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42743242/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔐</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>基於丙烯腈螢光素的基質調控質子去耦：經甲苯膨脹的PMMA實現多階加密與邏輯門製造。</h3>
+          <p class="journal-source">ACS applied materials &amp; interfaces</p>
+          <p>透過將丙烯腈結構螢光素嵌入PMMA基質，利用甲苯蒸氣誘導基質膨脹來控制分子與質子擴散，實現固態中逐步質子化的開關，進而構建三資訊加密與分子SR邏輯門，為高效防偽標籤與智慧型分子光子器件提供新策略。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42743077/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>利用彈性網路模型與傳遞熵分析解讀SHP-2的構象切換機制。</h3>
+          <p class="journal-source">Journal of molecular modeling</p>
+          <p>透過等權重多參數高斯網路模型（ewmGNM）分析SHP-2在野生型閉合（自抑制）、致癌E76K突變開放（活化）及與allosteric抑制劑SHP099結合時的低頻模式，發現E76K突變增加全域靈活性並破壞N-SH2/PTP介面耦合，而SHP099結合大致恢復閉合態動態但保留突變殘餘彈性；傳遞熵分析顯示開放態下N-SH2域可能成為新的訊息來源，暗示其為潛在allosteric位點。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42742803/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>希臘全國帕金森病患者憂鬱症的真實世界用藥模式與治療動態。</h3>
+          <p class="journal-source">Movement disorders clinical practice</p>
+          <p>在希臘全國帕金森病併憂鬱症（PD-DD） cohort 中，證實PD顯著增加憂鬱風險（OR 8.37），臨床醫師偏好使用鎮靜劑，尤其是 mirtazapine、duloxetine 與 quetiapine；非SSRI抗憂鬱藥較易被切換或增強，而 atypical antipsychotics（AAP）則較SSRI更持久，顯示真實世界中AAP在PD憂鬱維持治療中的持續性優勢。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42742618/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">👁️</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>抗腫瘤壞死因子-α 失效的非感染性葡萄膜炎：生物製劑切換策略的系統性文獻回顧與合成分析。</h3>
+          <p class="journal-source">Ophthalmology</p>
+          <p>在136項研究（129個病例報告/系列與7項比較研究）的系統性回顧與89項研究的meta分析中，對抗TNF-α無效的非感染性葡萄膜炎患者，切換生物製劑後的總體應答率為83%（95%CI: 76%-90%），其中類別間切換（interclass）效應優於類別內切換（intraclass），前者應答率達89%，後者為77%，提示切換至不同作用機制的生物製劑是克服TNF-α耐受性的有效策略。</p>
+          <div class="card-footer">
+            <span class="tag">系統性回顧</span><span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42742496/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>iDART：雙頻共振追蹤的干涉偵測奈米電機械映射技術。</h3>
+          <p class="journal-source">Small methods</p>
+          <p>透過將四象限相位差分干涉測量的飄米級位移靈敏度與接觸共振放大結合，開發出iDART技術，使其訊號雜訊比較傳統PFM方法提升至少十倍，成功降低所需偏壓，減少靜電串擇、焦耳熱與誘發開關等非理想效應，並在PZT與鉿鐵電薄膜上驗證其在弱壓電系統中的高靈敏度與低偏壓成像能力，擴展至2D鐵電材料、後CMOS技術及生物材料的奈米電機械功能探測。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42742371/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧫</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>切換 apo- 和 holo-IscR 對 LcrF 的控制改變鐵與氧氣如何調節耶爾森氏菌毒力因子。</h3>
+          <p class="journal-source">Infection and immunity</p>
+          <p>透過工程性突變將Yersinia pseudotuberculosis的native type 2 IscR結合基序換為type 1 motifs，發現該突變株在厭氧、鐵充足條件下過度表達LcrF及T3SS相關蛋白，進而改變感染動態：雖定殖瓶頸被改變，但擴散模式與野型株不同，提示[2Fe-2S]-IscR而非apo-IscR介導的LcrF表達會改變細菌的毒力調節與感染路徑。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42742341/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>暫態電位驅動的Ir位點響應調控格狀氧參與電催化過程。</h3>
+          <p class="journal-source">Angewandte Chemie (International ed. in English)</p>
+          <p>透過摻雜電子吸引性Mn鈣化鈥( Ca2IrO4 )，在酸性氧析條件下，Ir位點可產生快速且可逆的暫態氧化態提升與Ir-O共振增強，此強化的暫態響應促進了格狀氧活化，使得格狀氧機制在電解水中顯著貢獻，進而使該催化劑在質子交換膜電解槽中能以1.675 V達成1 A cm-2電流密度並穩定運行超過500小時，證明暫態Ir位點響應是調控電催化中格狀氧參與的關鍵因子。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42742295/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📐</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>提升多維系統半經典能量量子化的準確性。</h3>
+          <p class="journal-source">The Journal of chemical physics</p>
+          <p>透過兩步驟修正經典EBK量子化規則：首先加入由三、四階位勢導數估算的能量位移（ħ²級）以符合擾動理論；其次利用單軌道傅里葉分析驗證絕熱切換過程中守恆度，建立單經典軌道基礎的高精度多維振動能量計算方法，在Hénon-Heiles模型與非旋轉水分子上驗證其優於現有半經典方法的準確性，為非adiabatic過程、反應速率與同位素效應的理論計算提供更可靠工具。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42742145/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>在BC細胞耗竭多發性硬化症患者中的SARS-CoV-2管理策略：從預防到抗病毒治療。</h3>
+          <p class="journal-source">Expert review of clinical immunology</p>
+          <p>抗CD20療法雖能有效控制多發性硬化症，但會導致外周B細胞耗竭，進而劍弱體液免疫與疫苗反應，增加嚴重COVID-19與持續或復發感染風險；建議未來策略應聚焦於：1) 抗CD20抗體間策略性切換以改善疫苗效力；2) 變異株專一性單株抗體用於預防與暴後預防；3) 早期使用直接作用小分子抗病毒藥物在超炎症前阻斷病毒複製。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42741870/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🐾</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>鼩鼱寄生球蟲（Eimeriorina, Apicomplexa）的系係學研究。</h3>
+          <p class="journal-source">FEMS microbes</p>
+          <p>對歐洲與亞洲188隻鼩鼱糞便樣本進行檢測，發現四個分支：三個為宿主特異性（兩個關聯Crocidura，一個關聯Neomys），其一為多宿主共通株（見於Crocidura, Neomys, Sorex）；部分Sorex araneus的Isospora序列與鼠類來源的同源序列群聚，提示可能有宿主跳躍事件；結果未見明顯地理結構，且支序形與形態特徵不一致，支持鼩鼱球蟲具有較廣泛的宿主切換與再傳播能力，提醒此類過程在小型哺乳動物中可能比目前認識更為普遍。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42741655/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💨</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>吸入三聯療法在中度至重度哮喘患者中達成臨緩解的效果評估。</h3>
+          <p class="journal-source">ERJ open research</p>
+          <p>在之前僅使用ICS/LABA控制不佳的中重度哮喘患者中，轉用固定劑量BDP/FF/G（三吸入藥物）後，有26.1%（598/2291）在第52週達成臨床緩解（無OCS使用、無重度惡化、ACQ-5＜1.5及FEV1≥基線），其中三藥組緩解率（29.4%-29.6%）顯著優於雙藥組（20.0%-25.4%），提示在ICS/LABA失效時，升級至吸入三藥是獲得臨床緩解的有效策略。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42741602/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📄</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>PD-1轉PD-L1抑制劑後廣泛性皮膚扁平苔癬復發之個案報告：伴有既往口腔扁平苔癬病史。</h3>
+          <p class="journal-source">Frontiers in medicine</p>
+          <p>一位58歲女性，具有20年口腔扁平苔癬病史，在非小細胞肺癌診斷後使用camrelizumab（PD-1抑制劑）一月後發生廣泛性皮膚扁平苔癬，因而停藥並改用 atezolizumab（PD-L1抑制劑），但經八療程後，同一身體部位再次發生較嚴重的扁平苔癬，皮膚病理符合lichenoid界面性皮膚炎，經強效強的松（最高33 mg）緩解後，10月隨訪無復發，提示在自身免疫病史患者中，PD-1/PD-L1抑制劑循序使用可能導致免疫相關不良反應（irAE）遞歸。</p>
+          <div class="card-footer">
+            <span class="tag">案例報告</span><span class="tag">藥物治療</span><span class="tag">自身免疫</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42741598/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚖️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>應變調控氧化物薄膜中拓樸相變變遷的動力學。</h3>
+          <p class="journal-source">Small science</p>
+          <p>利用相場模擬分析SrCoOx薄膜中的棕磨鐵石-鈣鈦礦相變變遷，發現氧濃度依賴的擴散係數與表面氧通量受晶界應力主導，導致轉變動力學具方向性：在(LaAlO3)0.3(Sr2TaAlO6)0.7基板上，相變為突變型、核生成主導；而在SrTiO3基板上，則為空間均勻、從介面開始擴散的擴散型過程，說明應力工程可精準調控功能氧化物的拓樸相變速率與機制。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42741455/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🫁</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>種族中立肺功能檢查在自認黑白人種患者中的重新分類及其對醫療結果的影響。</h3>
+          <p class="journal-source">ERJ open research</p>
+          <p>在6107次肺功能測試中，切換至GLI Global種族中立參考值後，有9%（FEV1）與10%（FVC）的結果被重新分類為異常低；與始終正常組相比，被重新分類為低FEV1的黑人患者顯著增加用藥、急診與住院；而被重新分類為正常的白人卻反而有較高死亡率，提示肺功能解讀近臨界值時需結合臨床判斷，避免依賴嚴格切分導致誤判。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">兒童青少年</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42741266/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⏳</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>時間就是關鍵：共價BTK抑制劑劑量調整對慢性淋巴細胞白血病/小淋巴細胞白血病療效的7年真實世界研究。</h3>
+          <p class="journal-source">Cancer</p>
+          <p>在324例經上海門診診療的CLL/SLL患者（2018-2025）的7年追蹤中，早期（0-3個月）長時間劑量中斷（>14天）是預後不良的獨立危險因子（PFS HR 3.84，OS HR 3.29），而主動切換不同BTKi（非進展驅動）可顯著縮短中斷時間（中位數從14天降至6天），並獨立預後良好（OS HR 0.34，PFS HR 0.36），強調 timing-aware、DI vs DR 分層策略對長期生存的關鍵影響。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42740716/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚡</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>應變梯度驅動的懸浮單晶BaTiO3膜高效壓電光催化，實現抗生素污染物去除。</h3>
+          <p class="journal-source">Advanced materials (Deerfield Beach, Fla.)</p>
+          <p>透過可溶性牺牲層輔助脈衝雷射沉積，製備出懸浮單晶BaTiO3膜；超聲波誘導的應力梯度觸發動態a/c異域切換，減少篩選效應並增強內建電場，實現壓極化動態調控與載子持續分離，使其在超聲波下的降解活性是基板夾限樣本的1.88倍，在壓電光催化協同下達到四環素去除率90.25%，證明懸浮膜形式在壓電催化中的變革潛力，為設計高效催化劑提供新範式。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42740678/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">❤️‍🩹</span>
+            <span class="utility-low utility-sm">middle</span>
+          </div>
+          <h3>從傳統RAS封鎖切換至ARNI可降低HFrEF患者新發房顫風險：韓國全國性傾向評分匹配研究。</h3>
+          <p class="journal-source">European heart journal. Cardiovascular pharmacotherapy</p>
+          <p>在韓國全國健康保險資料（2017-2021）中，於39,061無房顫史的HFrEF患者進行1:1傾向評分匹配後，使用ARNI（n=9,030）組一年內新發房顫incidence為10.73/100人年，低於傳統RAS封鎖組（n=9,030）的12.15/100人年（HR 0.89，95%CI 0.81-0.98，P=0.021）；複合終點（房顫、缺血性中風或全因死亡）亦顯著降低（HR 0.85，P<0.001）；競爭風險分析中sHR為0.73（P=0.005）；未匹配組在調整混雜變數後HR為0.94（無顯著差異），支持在無房顫史HFrEF患者中，早期切換至ARNI是降低短期房顫風險的有效策略。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42740677/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔮</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>基於代理模型的量子 oracle 繪圖穩診斷：適用於非IID傳感器與遙測資料流。</h3>
+          <p class="journal-source">Sensors (Basel, Switzerland)</p>
+          <p>提出一個基於代理模型的診斷框架，用於評估量子串流演算法在結構依賴（如馬可夫切換、季節漂移、爆發重複、長範依賴）下的穩健性，透過設計操作代理（refreshing time τ 與 repetition number r）並跨五種合成非-IID regimes 建立(τ,r)敏感度景觀，發現經驗τ與解析τ在長範依賴下誤差可達125×，並適用於真實NYC Taxi與Machine Temperature遙測流，發現前者落入預測有利區域，後者則否，驗證該框架在真實雜訊環境中的實用性。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42740250/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔋</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>輔助升壓的多模式雙向諧振直流轉換器，適用於寬電池電壓範圍應用。</h3>
+          <p class="journal-source">Sensors (Basel, Switzerland)</p>
+          <p>透過在高壓側加入輔助Boost橋臂並複用諧振電感，提出一種雙向諧振DC-DC轉換器架構；採用混合PWM/PFM控制策略，在放電時提供中、高兩種增益模式，充電時提供低、中、高三種模式，有效延長電壓增益範圍、窄化開關頻率波動、簡化磁性元件設計；實驗證實在代表性工況下達成ZCS（零電流開關），顯著降低開關損失；750W原型機驗證其在40-120V電池充放電需求下的高效能與寬範適用性。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42740226/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>STAT3信號軸管轄血管平滑肌細胞表型切換與血管重塑的分子機轉與治療標的。</h3>
+          <p class="journal-source">Cells</p>
+          <p>系統闡述STAT3在血管平滑肌細胞（VSMCs）中的結構組織、翻譯後修飾與負向反饋機制，闡明其如何作為主導轉錄與功能節點，整合生化刺激、神經激素與應力信號，驅動表型轉變、增殖、移動、細胞死亡（抗凋亡與pyroptosis）、ECM重組與糖酵解重塑；並整理療法策略：結構域抑制劑、上游激酶間接劑、天然生物活性物及臨床前轉譯候補，同時指出全身毒性與精準遞送（如局部給藥裝置）為臨床轉譯關鍵挑戰。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42738917/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>AMPK γ-亞基 isoform 切換調控胃質母細胞瘤對Temozolomide的耐受與存活。</h3>
+          <p class="journal-source">Cells</p>
+          <p>在膠質母細胞瘤樣本中發現AMPKγ2基表現低，但經TMZ處理後細胞株顯著上調γ2並下調γ1，完成isoform switch；共濟免疫沉澱證明AMPKα催化亞基由γ1轉向主要結合γ2；功能上，γ2-dominant複合物對ATP的抑制敏感度降低，使細胞在TMZ壓力下維持較佳ATP穩定與持續AMPK活化；反之，γ2基因沉默則消失此優勢並重新敏感於TMZ-induced cell death，證實AMPKγ2 isoform的上調是TMZ耐受的關鍵代謝適應，提出靶向γ2複合物或阻斷此isoform transition為克服膠質母細胞瘤化學療法耐受的有潛力策略。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42738889/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>在光子積體電路中實現磁化全光切換的晶片級示範。</h3>
+          <p class="journal-source">Nature nanotechnology</p>
+          <p>在矽氮化物光子積體電路上，利用飛秒雷射脈衝導引至波導，在直接生長於波導上的微米級Co/Gd橫截霍爾結構上實現單脈衝全光切換磁化；透過霍爾效應讀電發現500nm寬度器件具90%切換對比度，隨尺寸增大對比度降低且變為隨機，有限元模擬確認此為空間非均勻光吸收所致，推測與畛域牆弛豎與熱輔助(去)釘釘過程有關；結果凸顯器件縮尺對實現穩健全光磁化切換的關鍵作用，為未來旋光電子-光子整合平台奠定基礎。</p>
+          <div class="card-footer">
+            <span class="tag">神經影像</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42736426/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩺</span>
+            <span class="utility-low utility-sm">middle</span>
+          </div>
+          <h3>[關於醫藥用碘造影劑過敏反應臨床診斷、治療與長期管理的專家共識（2026）]。</h3>
+          <p class="journal-source">Zhonghua yu fang yi xue za zhi [Chinese journal of preventive medicine]</p>
+          <p>由國內外指南、共識聲明、實務參數及文獻為基礎，以Delphi法邀請32位專家共同制定醫藥用碘造影劑（ICM）過敏反應的標準化流程：建議對疑似既往ICM過敏者進行過敏測試以協助診斷與選擇替代劑，無適應症者不建議皮膚測試；既往過敏且必須再次使用ICM時，首選更換不同類型ICM並可考慮預備用藥；既往有嚴重皮膚不良反應者應永久避免使用ICM；同時提供急性處理、後續評估與長期管理的具體建議，旨在規範ICM過敏反應的全程醫療流程。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42736144/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🤖</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>事件觸發最佳混合控制用於未知動態與擾動的切換非線性多智慧體系統。</h3>
+          <p class="journal-source">ISA transactions</p>
+          <p>針對具未知動態與外部擾動的切換非線性多智慧體系統（SNMASs），提出事件觸發最佳混合控制框架：將控制問題轉換為雙人零和博弈，利用切換Hamilton-Jacobi-Isaacs方程刻畫最佳條件；設計事件觸發自適應動態規劃（ETADP）在線適適近似解，並發展濾波器辨識器估計智慧體非線性；引入事件觸發機制（ETM）以分散式方式降低通訊與運算負擎，使每智慧體僅在觸發瞬間更新控制輸入與選擇 актив子系統；理論證明系統誤差一致最終有界並排除Zeno行為；模擬進一步驗證框架之有效性與效率。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42736105/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🌀</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>A perturbative Fourier transform method for Coulomb dissociation of one-neutron halo nuclei</h3>
+          <p class="journal-source">Journal of Subatomic Particles and Cosmology</p>
+          <p></p>
+          <div class="card-footer">
+            
+            <a href="https://doi.org/10.1016/j.jspc.2026.100507" target="_blank">PubMed →</a>
+          </div>
+        </div></div>
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+            <div class="topic-row">
+              <span class="topic-name">解離症</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">創傷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">失自我感</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">評估診斷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">心理治療</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div></div>
+
+  <div class="keywords-section section"><div class="section-title"><span class="section-icon">🏷️</span>關鍵字</div><div class="keywords"><span class="keyword">解離症</span><span class="keyword">失自我感</span><span class="keyword">創傷</span><span class="keyword">評估診斷</span><span class="keyword">心理治療</span></div></div>
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：nvidia/nemotron-3-super-120b-a12b</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
