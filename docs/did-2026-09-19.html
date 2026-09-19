@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年9月19日</title>
+<meta name="description" content="2026年9月19日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年9月19日</span>
+        <span class="badge badge-count">📊 38 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日文獻聚焦於基礎科學與技術創新，涵蓋蛋白質降解、光電材料、奈米載體及藥物傳遞等領域，未見直接關聯解離性身份障礙（DID）或解離症的臨床研究。整體趨勢為跨學科工程與生物醫學融合，惟缺乏針對創傷後解離機制、診斷工具或心理治療 efficacy 的新證據。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">📋</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>義大利多尺度解離量表（MDI-ITA）的判別效能：總分切點與次貢獻分析</h3>
+          <p class="journal-source">Journal of trauma & dissociation : the official journal of the International Society for the Study of Dissociation (ISSD) · Discriminative Performance of the Italian Multiscale Dissociation Inventory: Total Score Cutoff and Subscale Contributions</p>
+          <p>該研究驗證義大利版多尺度解離量表（MDI-ITA）總分切點為52，具良好判別能力（AUC=0.885），解離去真實感/失自我感 (DP/DR) 與脫離 (DIS) 次尺度顯示最高準度，支持其作為臨床篩檢工具之使用。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">439名義大利一般民眾成人</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">使用MDI-ITA總分與五個次尺度（DIS、DP/DR、EC、MD、ID）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">以DES-II切點（≥30）為臨床顯著解離的黃金標準</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">MDI-ITA總分AUC=0.885，最佳切點52時敏感度70.6%、特異度90.9%；DP/DR與DIS次尺度判別效果最佳</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">失自我感</span><span class="tag">失真實感</span><span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42750320/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">📚</span>其他值得關注的文獻</div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>泛素受體介導的泛素獨立標的蛋白質降解經由26S proteasome</h3>
+          <p class="journal-source">Science advances</p>
+          <p>開發Protea-Tac，一種可直接將標的蛋白質招募至26S proteasome進行降解的異功能蛋白質， bypass 泛素化步驟，展現高特異性與體內抗腫瘤效能。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span><span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42758827/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>蛋白質中的雙向光電開關經由光誘導相變實現</h3>
+          <p class="journal-source">Science advances</p>
+          <p>發現一種蛋白質聚合物經光強度可逆調控，在高光強下產生正光電流（β-sheet），低光強下產生負光電流（β-turn），實現雙向光電導切換。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42758814/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>進化救援模型為驅動癌細胞族群滅絕提供策略依據</h3>
+          <p class="journal-source">PLoS computational biology</p>
+          <p>利用進化模擬模型評估『雙擊滅絕療法』，結果顯示藥物切換時機對滅絕成功率影響重大，且在交叉耐藥存在時優於併用療法。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42758795/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚖️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>配體構象Entropy作為奈米載體-免疫細胞互動中電荷-吸收關係的制度切換描述子</h3>
+          <p class="journal-source">PloS one</p>
+          <p>透過情報理論描述子Hligand量化配體構象多樣性，發現其在~1.76 bits時觸發表面電荷與細胞吸收關係之符號反轉，預示 steric shielding 主導高 entropy 規則。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42758725/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💾</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>脈動雷射沉積鈷替代鋇氧化物薄膜及其二極體效能</h3>
+          <p class="journal-source">Nanoscale</p>
+          <p>透過最佳化PLD參數製備單晶Bi2-xSmxO3-δ薄膜，展現非波易性電阻切換，ON/OFF比 >10³，保持力 >10⁴ s，耐久性 >1.5×10⁴週，證明其在全氧化器件中的應用潛力。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42758502/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🌀</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>場可程式拓撲托龍在手性向列液晶中的實現</h3>
+          <p class="journal-source">ACS applied materials &amp; interfaces</p>
+          <p>透過工程化電壓波形，實現手性向列液晶中托龍（3D雙扭孤子）的按需求生成、平移與定位，並展示其在類磁軌記憶與微粒搬運中的應用潛力。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42758194/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧪</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>奈米流色譜聯結質譜作為可靠且敏感的脂質組學發現平台之實施</h3>
+          <p class="journal-source">Rapid communications in mass spectrometry : RCM</p>
+          <p>奈米流色譜（nano-LC）在相同進樣量下顯著提升脂質註釋數（1266 vs 919）與高品質註釋（835 vs 518），降低非預期碎裂（21-31%），並將檢測下限延伸40倍，證實其在樣本有限情況下的優越性。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42758032/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>有機室溫磷光材料中摻雜物與基體結構相似度的效應：「相似者相溶」</h3>
+          <p class="journal-source">Angewandte Chemie (International ed. in English)</p>
+          <p>證明有機RTP材料中，當摻雜物與基體結構相似時形成可混溶固溶體並增強RTP發射；結構不同時導致微相分離，使TTA-DF主導而抑制RTP，且機械研磨可部分復原RTP發射。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42758026/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>環境調控雜化鹵化物閃爍晶體的晶體結構重構，實現可調節STE發射向智慧型X光成像</h3>
+          <p class="journal-source">Angewandte Chemie (International ed. in English)</p>
+          <p>透過環境調控策略，使同一前驅系統產生三種結構異質的0D閃爍體，實現綠光至紅光的自陷激發子（STE）發射可調，其中Octahedral晶體（Crystal 2）達PLQY 95.2%及X光光產量 27,522 photons/MeV，具環境感應與可程式化X光成像潛力。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42757982/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>經Tri-TaOx工程提升保持性與突觸功能的快速電子memristor</h3>
+          <p class="journal-source">ACS applied materials &amp; interfaces</p>
+          <p>透過絕緣TaOy/缺氧TaOx/絕緣TaOy (Ty/Tx/Ty) 三層結構，實現無形成電子開關，ON/OFF比138，保持性>10³秒於室溫與120°C，且在交流脈衝下展現類突觸可塑性（STDP），週期壽命可達~10⁹次。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42757751/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>蛋白質設計領域的展望</h3>
+          <p class="journal-source">FEBS letters</p>
+          <p>生成式AI正推動蛋白質設計邊界，但現有信心度指標多靜態導向，對複雜或構象多樣目標效果有限；建議整合ensemble方法及分子膠設計以擴展功能範圍，包括折轉腳架與調控PPIN。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42757549/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">☀️</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>銦鍺氧化物奈米結構的電子結構、光學特性、整流及太陽光催化性能</h3>
+          <p class="journal-source">RSC advances</p>
+          <p>合成正交晶系CuGeO3奈米結構，驗證其帶隙約2.5-2.6 eV，具UV-Vis吸收、整流特性及光產生ROS能力，在模擬太陽光下達成甲藍約87%降解，顯示其在紫外光電與環境修復之雙重應用潛力。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42756442/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>將標準劑量靜脈注射切換為皮下注射的英西西孟單抗，在炎症性腸病患者中導致相似藥物暴露，不論是否併用免疫抑制劑（SHUFFLE研究）</h3>
+          <p class="journal-source">British journal of clinical pharmacology</p>
+          <p>在IBD緩解期患者中，將IFX從靜脈注射（每6-8週）切換為皮下注射（每2週）24週後，藥物暴露（AUC）無顯著差異，但皮下給藥導致 trough level 增加（4.6 vs 16.1 mg/L），時間負荷顯著下降（-9.3h/6月），生活品質改善（IBDQ-NL 189→197），且無惡化發生，97%維持治療。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42755407/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>以Sn為基礎的極端紫外光微乾抗蝕劑中可調節正/負tone切換：機制與Sub-7納米圖形化</h3>
+          <p class="journal-source">ACS applied materials &amp; interfaces</p>
+          <p>透過MLD合成Sn-based乾抗蝕劑，顯示其顯影模式可切換：氨水濕顯影產生正tone，氟化學 ICP 刻蝶產生負tone；在50 keV e-beam下達成7 nm線寬解析度，EUV下達18 nm，並闡明其極化切換機制為鍵斷與重組。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42755283/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">😷</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>口罩選擇對成人阻塞性睡眠呼吸中止正壓通氣治療依從性的影響</h3>
+          <p class="journal-source">Current opinion in pulmonary medicine</p>
+          <p>鼻罩優於全面罩，可提升PAP依從性（切換後最高增加77%），降低壓力需求與剩餘AHI；機制涉及口腔壓力傳遞、舌下顎位移及顎骨運動訊息用於漏氣類型辨識。</p>
+          <div class="card-footer">
+            <span class="tag">住院照護</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42755265/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>預防性pegfilgrastim對治療性filgrastim在骨肌腫瘤化療中預防發熱性中性減少症之效能：單中心回顧性研究</h3>
+          <p class="journal-source">Journal of orthopaedic science : official journal of the Japanese Orthopaedic Association</p>
+          <p>在骨肌腫瘤患者中，預防性pegfilgrastim顯著降低FN發生率（7.8% vs 26.4%，OR=0.24）及3/4級中性減少症（60.8% vs 100%），證明其在此族群中的臨床益處，值得前瞻性研究進一步驗證。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42754481/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>日本人類免疫缺陷病毒感染者併發乙型肝炎之管理：現行指南、挑戰與未來展望</h3>
+          <p class="journal-source">Journal of infection and chemotherapy : official journal of the Japan Society of Chemotherapy</p>
+          <p>在日本HIV感染者中，HBV併發率約6.4%，建議進行HBV篩檢、無抗體者接種疫苗、併發者使用tenofovir-based ART；主要挑戰包括複雜血清學解釋、低疫苗血清保護率及切換至無抗HBV活性藥物後之再發風險。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42753916/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔐</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>電壓可切換MoO3/ZnO異接面實現雙模光加密與類腦視覺</h3>
+          <p class="journal-source">ACS applied materials &amp; interfaces</p>
+          <p>在零外 bias 下，MoO3/ZnO異接面呈現四階段光響應（pyroelectric效應），寬光譜響應 (355-1550 nm)、極高ON/OFF比 (1.4×10⁵) 及 ultrafast 反應 (20/60 ms); 加外 bias 後透過陷阱脫陷實現持續光導電，模擬視覺突觸功能（STP/LTP/學習-記憶），實現光加密與影像辨識之多功能整合。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42753804/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>德國威爾森病臨床實務的療法管理：多中心回顧真實世界資料</h3>
+          <p class="journal-source">Zeitschrift fur Gastroenterologie</p>
+          <p>在德國六家專業中心收集143名WD患者（均接受trientine）真實世界資料，發現50%在DPA治療7年內切換至trientine，其餘則長達48年後才切換；平均經歷3.3線療法（1-6），DPA至trientine的切換因子為0.75（TETA-2HCl）及0.6（TETA-4HCl），提示需前瞻性研究以驗證切換策略。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42753766/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🦠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>膳食果膠經由重塑共生菌表面促進IgA介導的腸道炎症防護</h3>
+          <p class="journal-source">Cell host &amp; microbe</p>
+          <p>膳食果膠誘導無菌小鼠單 colonisation Bacteroides uniformis 產生高IgA表型，機制經pectin-responsive rcsC途徑重塑細菌表面，升HexCer (34:0) 被腸粒細胞CLEC4E識別，觸發中性粒子釋放APRIL，促進IgA類別轉換及包被，增進黏膜定位並防護結腸炎。</p>
+          <div class="card-footer">
+            <span class="tag">兒童青少年</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42753722/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🌞</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>可光切換生物降解塑料：經由g-C3N4光催化劑在光照下抑制生物降解</h3>
+          <p class="journal-source">Chemosphere</p>
+          <p>開發光切換可生物降解塑料，以熱處理g-C3N4/PCL複合膜實現：在光照下（模擬使用環境）因光催化抗菌作用完全抑制降解；在暗處（模擬海洋棄置）正常降解；此策略解決材料在使用期間穩定與棄置後快速降解之矛盾。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42753556/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>透過控制Cu2O納米立方尺寸切換CO2電還原選擇性：從C2H4至CH4</h3>
+          <p class="journal-source">ChemSusChem</p>
+          <p>隨Cu2O納米立方尺寸增加，CO2電還原產物選擇性從C2H4顯著切換為CH4；較大顆粒（Cu2O-3000）保留較高Cu+表面含量，抑制C-C耦合，促進CH4生成；較小顆粒（Cu2O-500/1000）快速還原形成Cu0/Cu+界面，促進C-C耦合及C2H4產生；表面Cu+豐度與Cu0/Cu+稀缺共同導致*CO氫化途徑轉向*CHO而非*COH，利於CH4選擇性。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42752925/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚡</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>血管平滑肌細胞可塑性的能量解碼：代謝重新編程與表型切換</h3>
+          <p class="journal-source">Cardiovascular drugs and therapy</p>
+          <p>血管平滑肌細胞（VSMC）由收縮型向合成型的表型轉型是血管鈣化、動脈粥樣硬化、動脈瘤及肺動脈高壓的關鍵事件，此過程伴隨能量需求增加；近年研究指出代謝重編程（特別是糖質、脂質、胺基酸代謝）為VSMC可塑性的核心調控機制，透過能量供應、中間代謝物及其訊號網路共同決定細胞命運。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42752802/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>美polizumab在先前使用其他生物製劑之重度哮喘患者中的療效：NUCALA效能研究（NEST）的事後分析</h3>
+          <p class="journal-source">The Journal of asthma : official journal of the Association for the Care of Asthma</p>
+          <p>在曾使用其他生物製劑（主要為omalizumab）且轉用mepolizumab的重度哮喘患者中，12個月內臨床顯著惡化發生率下降74%（IRR=0.26），口服類固醇使用率從60.0%降至23.5%，ACT平均分從14.0提升至19.5，超過三分之二患者達臨床有效改善（≥3分），提示mepolizumab在生物製劑經驗者中具真實世界療效。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42752293/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>光機械運動與發射切換在光反應等晶過渡金屬配合物中的實現</h3>
+          <p class="journal-source">Chemical communications (Cambridge, England)</p>
+          <p>合成三種等晶過渡金屬配合物[Mn/Fe/Ni(II)(9-AnBz)2(4-StPy)2(MeOH)2]，其中Mn(II)與Ni(II) complexes透過固態[2+2]光環加成產生光躍行（photosalient）與螢光切換；將Mn(II) complex嵌入聚乙醇矩基可製成柔性光機械致動器，用於原型光觸發電氣開關。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42751972/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>60歲以上HIV感染者切換至bictegravir-based三藥物或dolutegravir-based兩藥物療方後之生活品質</h3>
+          <p class="journal-source">HIV medicine</p>
+          <p>在60歲以上HIV感染者切換至BIC 3DR或DTG 2DR後，雖治療轉換原因分布有年齡差異（DTG 2DR組中不良反應占比顯著增加），但年齡≥60歲與較佳生活品質（QoL）獨立相關（aOR=2.88），未見高血壓、糖尿病或血脂異常之時間關聯顯著差異。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42751808/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📝</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>病例報告：混合遲發性症候群之成功管理——一名19歲女性 schizotypy 患者的組合藥物療法</h3>
+          <p class="journal-source">Clinical case reports</p>
+          <p>一名19歲女性 schizotypy 患者在抗精神病治療後發展為混合遲發性症候群（choreoathetoid dyskinesia 與顯著遲發性 dystonia），經單一內科住院39天，將抗精神藥物切換為氯氮平並加注肉毒桿菌毒素與中樞肌鬆劑 eperisone，AIMS分數從32驟降至8，精神病症狀（PANSS）亦從70改善至44，2月隨訪顯示簡化療方後維持改善，提示多模式策略（低D2親和力抗精神藥物 + VMAT2抑制劑 + 肌鬆劑）在難治性混合遲發症中的潛力，但需控制研究以明確各成分貢獻。</p>
+          <div class="card-footer">
+            <span class="tag">案例報告</span><span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42750933/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🌀</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>形狀可變蛋白質：其形式與功能的精微之處</h3>
+          <p class="journal-source">iScience</p>
+          <p>形狀可變蛋白質（含內在無序蛋白質與摺式切換/變形蛋白質）佔黑暗蛋白質顯著比例；闡明其四個常被誤解或被忽視之特徵：(1) 內無蛋白質結構之精微性；(2) 內無與allosteric調控之關聯；(3) 透過能量景觀理論辨識內無蛋白質構象偏好；(4) 無序區域在變形蛋白質摺式切換中的貢獻；並指出變形蛋白質可能經 evolutionary capacitor 機制促進表型可塑性與適應性演化。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span><span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42750698/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📡</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>多功能相變太赫茲吸收器：實現雙極Ultra-high-Q窄帶與Ultra-broadband吸收之動態切換</h3>
+          <p class="journal-source">Dalton transactions (Cambridge, England : 2003)</p>
+          <p>利用VO2相變驅動的混合超表面，實現太赫茲波的動態重構：在絕緣態下透過結構非對稱性將對稱保護BIC轉為dual quasi-BIC，雙模態分別由磁極(Main Dipole, MD)與磁四極(MQ)主導，品質因子超過5700及3600，FOM >10³ RIU⁻¹；金屬態下切換至VO2-Si界面的局域電極響應並與FP腔耦合，實現2.45-8.79 THz寬帶吸收 >95%。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42750646/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💻</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>功能性神經障礙於數位醫療中的未滿足需求</h3>
+          <p class="journal-source">Philosophical transactions of the Royal Society of London. Series B, Biological sciences</p>
+          <p>功能性神經障礙（FND）雖常見但長期被忽視，數位醫療有潜力透過六個途徑改善現況：(1) 利用大規模生物樣庫與臨床資料揭示流行病學、共病、機制、經濟負擔及可能的治療效應；(2) 用AI增強目前超過臨床容量的複雜評估；(3) 透過自動震顫分析、功能運動徵候量化及語音辨識提升診斷精準度；(4) 以線上工具與遠距醫療改善自我管理與療法取得；(5) 利用穿戴式裝置與遠距醫療改善結果測量與現有療法；(6) 探索AI-assisted療法、生物反饋及虛擬/擴增實境介入。同時警示數位工具可能帶來的風險：人格解體感、隱私洩漏、治療取代、數位依賴與數位排斥，並強調正向治療師效應（臨床師個人因素導致的結果變異）難以被數位完美複製。</p>
+          <div class="card-footer">
+            <span class="tag">功能性神經障礙</span><span class="tag">數位醫療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42750449/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔋</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>經熱響應生物質介面實現動態界面吸附，啟用溫度自適應鋅陽極</h3>
+          <p class="journal-source">Angewandte Chemie (International ed. in English)</p>
+          <p>構建膠與磺化纖維素納米晶複合熱響應介面，在室溫下透過氫鍵網絡均勻Zn²⁺通訊並空間限制沉積以抑制樹枝狀生長與腐蝕；在高溫下切換至動態吸附模式，重鏈聚合物暴露親鋅基團促進Zn(002)優先沉積並抑制氫氣析出與副產物，使對稱電池在30°C穩定循環2000小時、60°C達730小時，且在正極為V2O4或I₂系統下可維持高容量保留率（90.5%@2000循環/10C，91.1%@2500循環/4C，甚至9600循環@15C）。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42750387/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>神經 filament 輸送動力學可由少量獨立 kinesin 與 dynein 馬達活動解釋</h3>
+          <p class="journal-source">Biophysical journal</p>
+          <p>透過離散隨機模型 modelling 神經丝在軸突中由獨立 kinesin/dynein 馬達團隊運輸的行為，並以無偏自動抽樣算法分析約37,000筆高解析度（30.3 ms）軌跡與停頓資料，發現神經丝的斷斷續續運動、停頓與反轉可由1-2個獨立馬達（kinesin 或 dynein）透過其對 cargo 的機械力間接互動解釋，且模擬中幾乎未見相反方向馬達同時參與，支持其行為由交替馬達活動主導而非競爭。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42750279/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💧</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>水閘全构型重構的鑭-有機籠：動態調節富勒烯手光響應與自由基穩定性</h3>
+          <p class="journal-source">Angewandte Chemie (International ed. in English)</p>
+          <p>微量水分子作為鑒匙，觸發鑭-有機配籠的全构型重構：使穴窗近封閉、腔體收縮~20%，強化賓客互動；此變換將C60從預突變籠（Δ4P4）中的短壽手光響應（＜4 min）轉為後突變籠（Δ4P'4）中的持續態（~2 h），同時將手光響應放大3.5倍（|gabs|=1.62×10⁻²，為非共價誘導C60手光最高值），機制源於後突變態增強的凹凸π-π/分散作用。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42750084/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>聚焦氦離子照射用於決定性納米尺度磁畴壁釘扎與核生成於電流驅動磁化切換</h3>
+          <p class="journal-source">Nanotechnology</p>
+          <p>透過He²⁺離子照射精準工程磁異各向異性景觀，證明非照射間距僅10nm即可作為可靠釘扎點，並可人工製造異核中心以實現決定性磁化切換與反傳播，為節能磁牆記憶與邏輯元件的納米尺度設計提供簡單有效策略。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42748933/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩸</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>理論化可持續轉變：理解青少年女孩採用可重複使用墊片的維度</h3>
+          <p class="journal-source">Acta psychologica</p>
+          <p>在印度Udupi rurale公立學校對12-15歲女生（N=320）進行長期混合方法追蹤，發現基線時82.2%使用一次性墊片，34.7%缺乏成分與可生物分解知識；經認知與實踐理論引導的宣導及可重複使用墊片發放後，26.6%完全轉換，42.2%部分轉換；轉換動機來自舒適性、易維護、防漏、便棄及計畫影響；未轉換者則偏好便利性、缺乏環保意識；值得注意的是，轉換與經濟狀況無關，但廁所設置於室外者更易採用，提示情境自主性的關鍵作用；儘管污跡清除與乾燥困難等維護挑戰仍在，此研究揭示了實際行為路徑，並指出持續採用需結合環境教育、實踐支持、破除月經禁忌及家庭社區參與以降低結構性障礙。</p>
+          <div class="card-footer">
+            <span class="tag">兒童青少年</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42748594/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚠️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>關聯解離症狀與青少年非自殺性自傷及重複自殺企圖</h3>
+          <p class="journal-source">Journal of Korean Medical Science</p>
+          <p>此文獻為即將出版之預刊，標題暗示其將探討解離症狀與青少年非自殺性自傷（NSSI）及重複自殺企圖之關聯，但目前摘要與全文均未提供，故無法評估其具體內容或臨床價值。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">自傷自殺</span><span class="tag">兒童青少年</span>
+            <a href="https://doi.org/10.3346/jkms.2027.42.e14" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚠️</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>老年人重複 locomotion 擾動下的自主神經反應：位相習慣與持續性張 awake 分離</h3>
+          <p class="journal-source">Journal of Electromyography and Kinesiology</p>
+          <p>此文獻為已接受出版但尚未完整編排之預刊，標題提出其將探討老年人在重複動作擾動下自主神經反應之模式，特別是位相適應（phasic habituation）與持續張 awake 狀態（sustained tonic arousal）之間可能的脫節現象，但目前僅有標題與期刊資訊，無摘要或全文可供分析，故無法確定其研究設計或關鍵發現。</p>
+          <div class="card-footer">
+            <span class="tag">自主神經</span><span class="tag">老年</span>
+            <a href="https://doi.org/10.1016/j.jelekin.2026.103205" target="_blank">PubMed →</a>
+          </div>
+        </div></div>
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+            <div class="topic-row">
+              <span class="topic-name">解離症</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">評估診斷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">成人精神醫學</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div></div>
+
+  <div class="keywords-section section"><div class="section-title"><span class="section-icon">🏷️</span>關鍵字</div><div class="keywords"><span class="keyword">解離症</span><span class="keyword">失自我感</span><span class="keyword">失真實感</span><span class="keyword">評估診斷</span><span class="keyword">成人精神醫學</span></div></div>
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：nvidia/nemotron-3-super-120b-a12b</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
