@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年10月8日</title>
+<meta name="description" content="2026年10月8日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年10月8日</span>
+        <span class="badge badge-count">📊 24 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日文獻整體聚焦於解離症狀在精神疾患中的共通機制探討，特別是經由 RDoC 框架分枝出 somatic symptoms 與精神症狀之間的關聯，顯示解離症狀未被獨立深度探討，但有潛力成為未來研究焦點。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">🧠</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>RDoC Mechanisms Underlying Bodily Symptoms in Psychiatry: A Scoping Review.</h3>
+          <p class="journal-source">Psychology research and behavior management · RDoC Mechanisms Underlying Bodily Symptoms in Psychiatry: A Scoping Review.</p>
+          <p>經由 scoping review 揭示 somatic symptoms 與精神疾患間最常見機制為 somatosensory perception 與 self-knowledge，並指出 dissociative disorders 為未來研究關鍵缺口，強調需跨領域整合以理解身心症狀交互作用。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">成人精神疾患患者（含情緒、焦慮、解離、精神病譜系）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無（文獻回顧）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">somatic symptoms（特別是疼痛與非特異性身體症狀）與 RDoC 建構（somatosensory perception, self-knowledge）之關聯最為顯著，pain-perception-borderline personality disorder 為最常見三元組</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">失自我感</span><span class="tag">失真實感</span><span class="tag">身體化解離</span><span class="tag">神經生物學</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42841023/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">📚</span>其他值得關注的文獻</div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩺</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Burnout Factors in Neurology: A Survey Assessing Key Factors Among US Academic Faculty.</h3>
+          <p class="journal-source">Neurology. Clinical practice</p>
+          <p>美國學術神經科教師中近60%經歷中度至高度倦怠，情緒耗竭在晚期職涯顯著上升，領導角色與研究參與度為主要風險因素。</p>
+          <div class="card-footer">
+            <span class="tag">倦怠</span><span class="tag">醫師福祉</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42842863/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Cycling Versus Swapping After First-Line TNF Inhibitor Failure in Psoriatic Arthritis: Real-World Insights From the Argentine RECCAPSO Registry.</h3>
+          <p class="journal-source">Journal of clinical rheumatology : practical reports on rheumatic &amp; musculoskeletal diseases</p>
+          <p>在乾性關節炎患者中，首次TNFi失效後70%選擇換藥至不同作用機制（swapping），而非同機制換藥（cycling），後者更易導致後續治療升級。</p>
+          <div class="card-footer">
+            <span class="tag">風濕病</span><span class="tag">生物製劑</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42842542/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">☠️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Incidence, onset, severity, risk factors, and rechallenge strategies of etoposide infusion-related reactions in adults: A retrospective cohort study.</h3>
+          <p class="journal-source">Journal of oncology pharmacy practice : official publication of the International Society of Oncology Pharmacy Practitioners</p>
+          <p>成人使用等пози托昔醫源性反應發生率達14.6%，高於預期，多發於第二次療程，grade 2為主，補種策略以減速輸注及抗組胺藥為主，可維持療程連續性。</p>
+          <div class="card-footer">
+            <span class="tag">腫瘤藥劑</span><span class="tag">不良反應</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42842321/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>Risks of Burnout Among Mobile Crisis Team Workers in a Southern U.S. State: A Pilot Study of Work Climate and Mindfulness.</h3>
+          <p class="journal-source">Community mental health journal</p>
+          <p>流動危機團隊成員中31.3%報告中度至高度疲竭，14.6%報告去人格化，個人正念與工作氣候分別預測疲竭與去人格化，顯示組織與個人資源對防止倦怠的關鍵作用。</p>
+          <div class="card-footer">
+            <span class="tag">倦怠</span><span class="tag">心理治療</span><span class="tag">工作壓力</span><span class="tag">正念</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42842172/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧪</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>An aptamer-controlled Mn-Au nanozyme for H2O2-free and smartphone-assisted colorimetric detection of mercury ions.</h3>
+          <p class="journal-source">Mikrochimica acta</p>
+          <p>開發出以錳-金納米酶為基礎、由汞離子特異性aptamer控制催化活性的顏色檢測平台，無需H2O2，可透過智慧型手機實現汞離子的靈敏現場檢測，適用於環境監測。</p>
+          <div class="card-footer">
+            <span class="tag">生物感測</span><span class="tag">環境毒物</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42842034/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Efficacy and safety of switching to once-daily oral doravirine plus raltegravir in virologically suppressed people with HIV-1: a randomized, open-label, multicentre phase 2 study (DORAL).</h3>
+          <p class="journal-source">The Journal of antimicrobial chemotherapy</p>
+          <p>在HIV病毒已抑制的患者中，轉換至每日一次口服多拉韋恩+拉爾泰格韋雙藥 regimens 在48週內維持病毒抑制（僅1例失敗），安全性良好，適合希望減少藥物相互作用或避免NRTI的族群。</p>
+          <div class="card-footer">
+            <span class="tag">愛滋病</span><span class="tag">抗病毒療法</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42841932/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Does the DOOR Account for Post-randomization Treatment Modification or Incorporate It?</h3>
+          <p class="journal-source">Clinical infectious diseases : an official publication of the Infectious Diseases Society of America</p>
+          <p>澄清DOOR（死亡或脫離治療）納入而非解釋後隨機化治療修飾，指在Voriconazole-AmB試驗中，頻繁切換治療使得DOOR反映實際治療策略而非原始單一藥物效果。</p>
+          <div class="card-footer">
+            <span class="tag">統計方法</span><span class="tag">藥物試驗設計</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42841806/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧫</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Tropolone and hinokitiol act against Staphylococcus aureus by concentration-dependent iron restriction or toxic iron overload.</h3>
+          <p class="journal-source">mSphere</p>
+          <p>天然金屬螯合劑tropolone與hinokitiol經濃度雙向調節鐵代謝：低濃度促進細胞內鐵過載導致氧化應激，高濃度則造成鐵錳飢餓及銅毒性，其中僅tropolone在低及高濃度皆具抑菌效果，顯示其潛在作為耐藥金黃葡萄球菌的新型抗菌策略。</p>
+          <div class="card-footer">
+            <span class="tag">抗菌藥物</span><span class="tag">金屬稅態</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42841620/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Pneumococcal-Driven Genetic Competence: A Key Driver of Pathobiont Adaptation and Disease Potential.</h3>
+          <p class="journal-source">Molecular oral microbiology</p>
+          <p>鏈球菌的遺傳變異主要來源於自然轉型能力（genetic competence），尤其在肺炎鏈球菌及其近縁共生種中，此機制驅動其從共生轉為致病，並促進耐藥基因、致毒因子與莢膜轉換的獲得，是了解 invasiveness 與抗藥性演化的關鍵。</p>
+          <div class="card-footer">
+            <span class="tag">基因轉移</span><span class="tag">抗藥性</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42841554/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>The disfluency effect revisited: processing demands moderate memory performance.</h3>
+          <p class="journal-source">Memory (Hove, England)</p>
+          <p>不流暢效應（disfluency effect）僅在低認知負荷下促進記憶，在高負荷條件下則因資源被用於處理字體本身而消失，顯示該效應依賴於可用認知資源，難以在實際高負荷環境中可靠發揮。</p>
+          <div class="card-footer">
+            <span class="tag">記憶</span><span class="tag">認知心理</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42841445/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">👕</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Thermochromic Structural Color Metafabric Enabling Adaptive Thermal Management and Chromatic Display.</h3>
+          <p class="journal-source">Small (Weinheim an der Bergstrasse, Germany)</p>
+          <p>開發出具熱致結構色功能的智慧紡織 metafabric，藉由熱致微膠囊與光子晶膠層協同作用，實現被動式調溫（35–40°C）與多色顯示，結構色在高溫時隨熱致微膠囊變白而消失，同時底層奈米纖維提升紅外發射達 radiative cooling。</p>
+          <div class="card-footer">
+            <span class="tag">智慧紡織</span><span class="tag">熱管理</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42841394/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Motility patterns of Euglena species in confining microfluidic geometries.</h3>
+          <p class="journal-source">Lab on a chip</p>
+          <p>雙殼藻（Euglena gracilis 及 E. acus）在微流體限制環境中展現多樣運動行為：低限制下以碰撞散射逃脫，強側向限制下轉為摩擦往復運動伴細胞膜變形（metaboly），其中 E. acus 在彎曲通道中更依賴 metaboly，而 E. gracilis 則保留鞭毛推進，顯示物種特異的機械感應與適應策略。</p>
+          <div class="card-footer">
+            <span class="tag">細胞運動</span><span class="tag">生物力學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42841202/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>Unsymmetrical naphthalene diimides as electrochromic materials: tailoring structure for controlled optical and redox properties.</h3>
+          <p class="journal-source">RSC advances</p>
+          <p>經N-取基改造的非對稱萘二酰胺（NDI）衍生物展現多重可逆氧化還原態，產生多狀態電致變色效應，其中 NDI-3 因具寬廣電化學窗與豐富光學響應，適用於固態電致變色裝置，實現可見光與近紅外區域的可逆多色切換，切換速度為1.4–8.7秒，尤其在自由基陰離子／二陽離子過渡態穩定性良好。</p>
+          <div class="card-footer">
+            <span class="tag">電致變色</span><span class="tag">智慧窗</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42840849/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Neural substrates of duration serial dependence: Putamen suppression of the prior duration trace.</h3>
+          <p class="journal-source">Neuroimage. Reports</p>
+          <p>時間知覺的序列依賴（serial dependence）源自背側紋狀體（putamen）的抑制性訊號，而非前額葉或視覺皮質，說明不同感知維度（如時間 vs 方向）具獨立神經機制，挑戰單一統一模型的時間知覺偏見理論。</p>
+          <div class="card-footer">
+            <span class="tag">時間感知</span><span class="tag">基底神經節</span><span class="tag">fMRI</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42840448/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">❄️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Unleashing the Giant Electrocaloric Effect in Fluoropolymers via a High-Polar-Entropy Strategy.</h3>
+          <p class="journal-source">Advanced materials (Deerfield Beach, Fla.)</p>
+          <p>透過提升零場熵與降低偶極轉換能障的高極化熵策略，顯著增強PVDF基氟聚合物的電熱效應（ECE），預期可 avvicin理論極值，為微型固態製冷開辟新路徑，解決傳統極化熵不足限制實際製冷效能的問題。</p>
+          <div class="card-footer">
+            <span class="tag">電熱效應</span><span class="tag">節能製冷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42839728/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔦</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>Q-switching Gaussian burst pulse in distributed Bragg reflector Yb-doped double-clad fiber laser with taper active length of 4&#x2005;cm.</h3>
+          <p class="journal-source">Optics express</p>
+          <p>首次示範以銠摻雙絡光纖雷射中，經4cm縮銠主動段產生的強非線性效應與可飽和吸收，實現高斯突波（Gaussian burst pulse）的Q開關產生，單脈衝能達22.1 μJ，寬227 μs，重複率28.2 kHz，為脈衝光源與光學儲存提供新可能。</p>
+          <div class="card-footer">
+            <span class="tag">光子學</span><span class="tag">雷射技術</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42839480/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🎯</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>Tunable particle trapping based on a polarization-sensitive transverse bifocal metalens.</h3>
+          <p class="journal-source">Optics express</p>
+          <p>設計具偏振敏感雙焦特性的金屬透鏡（metalens），利用Pancharatnam-Berry與傳播相位混合機制，在線橢偏光下可同時捕捉兩焦點粒子，並經調橢率或左右圓偏光切換靈活控制或轉移粒子，模擬顯示100nm Polystyrene粒子在0.4ms內轉移效率達92.1%，轉移速度與粒子尺寸成正比，為奈米操作與光晶體積元提供高彈性解方案。</p>
+          <div class="card-footer">
+            <span class="tag">奈米光子學</span><span class="tag">光學鎗束</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42839391/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🦠</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>TMEM16F deficiency alleviates sepsis-induced acute lung injury through regulating macrophage polarization.</h3>
+          <p class="journal-source">Inflammation research : official journal of the European Histamine Research Society ... [et al.]</p>
+          <p>TMEM16F缺失可促進巨噬細胞M2型極化，抑制STAT3訊號與NLRP3激活，減輕敗血症導致的急性肺損傷、全身性炎症、氧化應力與微血栓，並提升小鼠存活率；同時證實天然物質platycodin D可作為TMEM16F抑制劑，經重編巨噬細胞為抗發炎表型而達保護效果，揭示調節磷脂翻轉酶為 sepsis-related ALI 的潛在治療標的。</p>
+          <div class="card-footer">
+            <span class="tag">巨噬細胞</span><span class="tag">敗血症</span><span class="tag">急性肺損傷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42839125/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🪱</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>Highly efficient RPA product degradation and expanded PAM recognition enable RPA-Cas3 detection of Clonorchis sinensis.</h3>
+          <p class="journal-source">Analytica chimica acta</p>
+          <p>利用TsiCas3（來自T. siculi的type I-A CRISPR-Cas3）建構一管式、閉鎖式RPA-Cas3檢測系統，以溫度切換（37°C擴增 → 65°C檢測）物理分離擴增與訊號，避免酶競爭，Cas3具強效降解RPA產物之特性大幅降低氣溶膠污染風險，提供快速、敏感、適用於野外的複製蟲病篩檢工具。</p>
+          <div class="card-footer">
+            <span class="tag">分子診斷</span><span class="tag">寄生蟲</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42838688/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>Trends and safety of small bowel endoscopy in Crohn's disease in Japan: a large-scale claims database analysis.</h3>
+          <p class="journal-source">Intestinal research</p>
+          <p>日本克隆氏病患者中，氣囊輔助內視鏡（BAE）與小腸膠囊內視鏡（SBCE）使用人數逐年上升，尤其在SBCE前實施通過性檢查後，相關不良事件率明顯下降（0.88% vs 1.47%），顯示預先評估對提升檢查安全性的重要性。</p>
+          <div class="card-footer">
+            <span class="tag">腸胃鏡檢</span><span class="tag">克隆氏病</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42838525/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🌾</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>pH-switchable multi-enzyme-like activities of Bi12Co0.6O18.8-AuNPs nanozyme: An electrochemical-colorimetric dual-mode aptasensor for ultrasensitive Cd2+ detection in rice.</h3>
+          <p class="journal-source">Food chemistry</p>
+          <p>開發出pH可切換的鋇鈷金納米酶（Bi12Co0.6O18.8-AuNPs），在酸性條件下呈過氧化氢酶樣活性（催化TMB發色），在鹼性條件下轉為催酶樣活性（分解H2O2產生O2電訊號），結合aptamer特異識別，建構出雙模式（電化學+顏色）Cd2+檢測器，檢測限至 pg/mL 級別，並在真米樣本中驗證其食品安全監測實用性。</p>
+          <div class="card-footer">
+            <span class="tag">食品安全</span><span class="tag">納米酶</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42838013/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>Domain-general multitasking strategy developed from language experience: Neurobehavioral evidence from student interpreters.</h3>
+          <p class="journal-source">Brain and language</p>
+          <p>口譯訓練學生在非語言雙任務中展現特殊神經策略：雖主要任務（聽覺）反應時間變慢，但次要任務（視覺）反應變快，fMRI顯示其在運動前中央迴、補运动區與小脑的雙任務專属激活增強，顯示他們透過預先激活兩個任務的任務集（task-set）來優化整體效率，而非單纯提升單一任務表現，此策略由語言經驗誘導，並經腦-行為相關驗證，支持語言訓練可遷移至提升一般性多任務處理能力。</p>
+          <div class="card-footer">
+            <span class="tag">多任務處理</span><span class="tag">語言訓練</span><span class="tag">fMRI</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42837884/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔊</span>
+            <span class="utility-low utility-sm">low</span>
+          </div>
+          <h3>Ultrasonic interference analysis and elimination for LED-based photoacoustic imaging systems.</h3>
+          <p class="journal-source">Ultrasonics</p>
+          <p>LED驅動的光聲影像系統因高頻開關產生電磁干擾（EMI），導致探頭被動發聲產生噪聲；經脈波寬調整使其譜 nul 與探頭中心頻率對齊，可減聲噪3.4 dB；進一步利用光快門重建殘差圖技術，消除聲噪達13.3 dB，顯示經電子與算法雙重優化，可顯著提升LED式光聲系統訊噪比，推廣其臨床應用潛力。</p>
+          <div class="card-footer">
+            <span class="tag">光聲影像</span><span class="tag">EMI抑制</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42837721/" target="_blank">PubMed →</a>
+          </div>
+        </div></div>
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+            <div class="topic-row">
+              <span class="topic-name">解離症</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">創傷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:0%"></div></div>
+              <span class="topic-count">0</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">身體化解離</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">評估診斷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">神經生物學</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">1</span>
+            </div></div>
+
+  <div class="keywords-section section"><div class="section-title"><span class="section-icon">🏷️</span>關鍵字</div><div class="keywords"><span class="keyword">解離症</span><span class="keyword">RDoC</span><span class="keyword">身體症狀</span><span class="keyword">somatosensory perception</span><span class="keyword">self-knowledge</span></div></div>
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：nvidia/nemotron-3-super-120b-a12b</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
