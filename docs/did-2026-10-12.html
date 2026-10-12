@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年10月12日</title>
+<meta name="description" content="2026年10月12日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年10月12日</span>
+        <span class="badge badge-count">📊 18 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日共抽取18篇文獻，經篩選後發現無任何論文聚焦於解離性身份障礙（DID）或解離症相關主題，所有文獻皆屬於生物醫學、納米科學、藥物動力學或基礎生命科學領域，與精神醫學、創傷或解離症狀無關。</p>
+  </div>
+
+  
+
+  <div class="section"><div class="section-title"><span class="section-icon">📚</span>其他值得關注的文獻</div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>Infliximab 血清濃度評估：從靜脈注射轉為皮下給藥後的變化 —  — ISLASIS 研究</h3>
+          <p class="journal-source">Clinical and experimental gastroenterology</p>
+          <p>皮下注射醋酸氟光單克隆抗體（SC-IFX）在克羅恩病或潰瘍性結腸炎患者中，可顯著提升並穩定藥物經抹濃度，同時改善臨床指數與糞便鈣護蛋白水平。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42859810/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🌊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Skyrmion 在非厄米特光學微腔中的標量場實現：自發形成、非線性控制與光學力</h3>
+          <p class="journal-source">Nanophotonics (Berlin, Germany)</p>
+          <p>在激子極itron凝聚態中，經非諧振激發可自發生成標量場中的Skyrmion拓撲紋理，並經非厄米特增益/損耗與非線性效應實現全光控制。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42859533/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🫁</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>NFAT 轉錄因子在肺動脈重塑與肺高血壓中的關鍵作用：從 PASMC 增殖到治療標靶</h3>
+          <p class="journal-source">Molecular biology reports</p>
+          <p>NFAT1-4 活化促進肺動脈平滑肌細胞異常增殖與表型轉換，是肺高血壓血管重塑的核心分子機制，NFAT5 的角色仍需進一步闡明。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42859271/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-high utility-sm">高</span>
+          </div>
+          <h3>IPX203 在帕金森病運動波動管理中的共識觀點：整合至臨床實務的建議</h3>
+          <p class="journal-source">Journal of neurology</p>
+          <p>IPX203 為新一代緩釋左旋多巴製劑，可顯著提升良好ON時間、降低OFF時間，適合口服左旋多巴治療不足的帕金森病運動波動患者，建議在裝置輔助療法前使用。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42859237/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>M-CDK 磷酸化 DNA Pol α 觸發標準複制向重組依賴DNA合成的轉換：解釋晚複製區基因加速演化的機制</h3>
+          <p class="journal-source">The EMBO journal</p>
+          <p>有絲分離周期進入前，M-CDK磷酸化DNA聚合酶α導致複製叉塌縮，啟動錯誤易發的重組依賴DNA合成（MiDAS），為未複製DNA提供修復窗口，解釋晚複製基因組區域演化加速的機制。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42859192/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>電化學控制 Scholl 反應：芳鈉離子與自由基陽離子路徑的精準切換</h3>
+          <p class="journal-source">Angewandte Chemie (International ed. in English)</p>
+          <p>透過電化學氧化調控電位與極性（LPA vs HPN），可精準切換Scholl反應中的芳鈉離子與自由基陽離子路徑，證實多數底物可經雙路徑反應，為機理爭議提供實證基礎。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42859132/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-high utility-sm">高</span>
+          </div>
+          <h3>中國漢人族群中 CYP2C19/CYP2B6 合併表型對舍曲林劑量正規化濃度與抗憂鬱藥物切換 incidence 的影響： retrospection cohort 研究</h3>
+          <p class="journal-source">Progress in neuro-psychopharmacology &amp; biological psychiatry</p>
+          <p>CYP2B6 中間代謝型（IM）與 CYP2C19 各代謝型組合，可顯著增加舍曲林血漿濃度（最高2.11倍）與一年內抗憂鬱藥物切換率（最高34.3%），顯示雙基因型模型優於單一 CYP2C19 模型，具臨床藥學意義。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42858801/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🦠</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>Osmo性瀉藥PEG腸道微生物動態的治療依賴 Lotka-Volterra 分析：揭示 Microbiota 離子與恢復模式</h3>
+          <p class="journal-source">Mathematical biosciences</p>
+          <p>在小鼠模型中，聚乙二醇（PEG）瀉藥誘導Muribaculaceae 家族顯著下降，Bacteroidaceae 相對穩定；經建模證實PEG暴露與停藥後為兩種動態 regimes，高濃度PEG（15%）導致腸道微生物無法完全恢復至 pretreatment 狀態。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42858769/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔥</span>
+            <span class="utility-high utility-sm">高</span>
+          </div>
+          <h3>可程式化熱調控 LbCas12a 核酸酶活性：以 ssDNA 阻斷劑實現精準溫度開關，適用於 POCT 結核病檢測</h3>
+          <p class="journal-source">Biosensors &amp; bioelectronics</p>
+          <p>利用可熱解離的 ssDNA 阻斷劑，實現 LbCas12a 在 37–42°C 區間內的可程式化熱開關，結合 RPA 建立一管式 POCT 平台，對結核病具有 90.48% 臨床敏感度與 100% 特異度，為 CRISPR 診斷提供新策略。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42858626/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📊</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>離子流動譜譜技術的擴展：整合 SFC-IMS、軟 X 零子離子化與 ultrafast 双極性操作，適用於真實世界樣品分析</h3>
+          <p class="journal-source">Journal of chromatography. A</p>
+          <p>首次將超臨界流體色譜（SFC）與軟X射線離子流動譜譜（IMS）耦合，實現 ultrafast 双極性切換，使單次 cromatogram 中可同時偵測正負離子體，提升硝胺與尼古丁等複雜樣品的定性與半定量分析能力。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42858482/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>阿茲海默症 amyloid-tau 界面的神經免疫狀態配置：一個可驗證的框架以解釋異質臨床軌跡</h3>
+          <p class="journal-source">Aging and disease</p>
+          <p>提出多維度、區域異質的神經免疫狀態框架，整合AT(N)系統、細胞階段與病態微胶質/星形膠質細胞轉錄特徵，區分 amyloid-tau 介面的四種意義（生物標誌、空間、細胞狀態、臨床進展），並提出可 확률的狀態讀取器，以超越現有生物標誌的增量價值，為個人化醫療提供理論基礎。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42858330/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩸</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>Ejiao（阿膠）經上調 SDF-1/CXCR4 通路促進薄子宮內膜修復：在薄內膜小鼠模型中的前臨床證據</h3>
+          <p class="journal-source">Journal of obstetrics and gynaecology : the journal of the Institute of Obstetrics and Gynaecology</p>
+          <p>在乙醇誘發的薄子宮內膜小鼠模型中，Ejiao 顯著提升內膜厚度與腺體密度，優於雌二醇，機制為上調子宮 SDF-1/CXCR4 訊號軸，提供其中醫薬治療薄內膜的前臨床機制支持。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42857967/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>高耐久低損 Sb2Se3 光學開關：以透明導電加熱器於氮化矽平台上實現超億次可逆切換</h3>
+          <p class="journal-source">ACS photonics</p>
+          <p>將相變材料Sb2Se3與氮化矽平台整合，利用ITO微加熱器實現非揮發性光學開關，可重複切換超過1.4億次，支援多位元操作，為光子積體電路提供可擴展、低能耗的可重構平台。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42857633/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💎</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>外圎鈺過渡金屬配位的纏結膦酞菁：經外圎氮原子金屬化實現近紅外光物理性質的可開關控制</h3>
+          <p class="journal-source">Chemical science</p>
+          <p>在酞菁分子外圎meso-氮位引入Pd(II)或Pt(II)配位，輔以磷烷或硫醇配體，經可逆脫金屬實現近紅外螢光與Magnitism的ON/OFF切換，為活化近紅外發射分子提供新設計策略。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42857427/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💪</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>SREBF1 缺損破壞脂質訊號並導致慢肌纖維變性：揭示其在肌纖維類型特異性存活檢查點中的角色</h3>
+          <p class="journal-source">iScience</p>
+          <p>斑馬魚中Srebp1基因敲除導致慢肌纖維組織紊亂、幼魚運動增加、成魚肌肉質量下降，伴隨脂肪酸組成改變、內源性大麻素樣訊號失衡及心磷脂通路基因表達異常，支持Srebp1為慢氧化纖維的脂質 homeostasis 檢查點，其缺失促進慢至快纖維轉換，與肌少症相關。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42857278/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧫</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>人類受限病原體 Streptococcus pneumoniae 中自然莢囊切換的全球演化動態：揭示遺傳與生態驅動因子</h3>
+          <p class="journal-source">bioRxiv : the preprint server for biology</p>
+          <p>基於10,558份肺炎鏈球菌全基因組序列，發現莢囊切換僅發生在約4%的莢囊型別對之間，其發生率受莢囊基因簇大小、厚度、鼻咽定殖時間及遺傳背景共同影響，非莢囊基因座影響有限，遺傳背景為主要驅動力，對疫苗設計具啟示。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42856313/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>人類腦白症（FXS）中 FMR1 剪接失調：偽外顯子 FMR1-217 的形成、後果與修復策略</h3>
+          <p class="journal-source">bioRxiv : the preprint server for biology</p>
+          <p>約70% FXS 個體雖轉錄 FMR1，但因 intron 1 偽外顯子導致誤剪接為 FMR1-217 isoform，無法產生 FMRP，其出現率與 CGG 重複長度正相關、智商負相關，可經 splice-switching ASO 修復正常剪接並提升 FMRP，揭示其誤譯 polypeptide 可能參與認知障礙機轉。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42856284/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⏱️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>光週期限時進食通過性別特異的轉錄本切換重塑心臟轉錄組隱藏層：未註解變體占比超20%</h3>
+          <p class="journal-source">bioRxiv : the preprint server for biology</p>
+          <p>使用長讀 RNA-seq 發現心臟轉錄組中超20%為未註解變體，光週期限時進食透過性別特異的轉錄本使用重排（而非總基因表達改變）重塑心臟分子景觀，揭示轉錄水平調控為心臟對飲食節奏變化的關鍵但被低估的響應機制。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42856126/" target="_blank">PubMed →</a>
+          </div>
+        </div></div>
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+            <div class="topic-row">
+              <span class="topic-name">解離症</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:NaN%"></div></div>
+              <span class="topic-count">0</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">創傷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:NaN%"></div></div>
+              <span class="topic-count">0</span>
+            </div></div>
+
+  
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：nvidia/nemotron-3-super-120b-a12b</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
