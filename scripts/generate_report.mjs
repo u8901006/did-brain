@@ -54,78 +54,129 @@ function loadPapers(path) {
   return JSON.parse(readFileSync(path, 'utf8'));
 }
 
-function sanitizeJson(text) {
-  if (!text) return null;
-  let s = text.trim();
-  if (s.startsWith('```json')) s = s.slice(7);
-  else if (s.startsWith('```')) s = s.slice(3);
-  if (s.endsWith('```')) s = s.slice(0, -3);
-  s = s.trim();
+function _isReportObject(value) {
+  return value !== null &&
+    typeof value === "object" &&
+    !Array.isArray(value) &&
+    ["market_summary", "top_picks", "all_papers"].some(key =>
+      Object.prototype.hasOwnProperty.call(value, key)
+    );
+}
 
-  const jsonStart = s.indexOf('{');
-  const jsonEnd = s.lastIndexOf('}');
-  if (jsonStart >= 0 && jsonEnd > jsonStart) {
-    s = s.slice(jsonStart, jsonEnd + 1);
+function _extractJsonCandidates(text) {
+  const candidates = [];
+  for (let start = 0; start < text.length; start++) {
+    const opener = text[start];
+    if (opener !== "{" && opener !== "[") continue;
+    const stack = [opener === "{" ? "}" : "]"];
+    let inString = false;
+    let escaped = false;
+    for (let index = start + 1; index < text.length; index++) {
+      const char = text[index];
+      if (inString) {
+        if (escaped) escaped = false;
+        else if (char === "\\") escaped = true;
+        else if (char === '"') inString = false;
+        continue;
+      }
+      if (char === '"') inString = true;
+      else if (char === "{") stack.push("}");
+      else if (char === "[") stack.push("]");
+      else if (char === "}" || char === "]") {
+        if (stack.length === 0 || char !== stack[stack.length - 1]) break;
+        stack.pop();
+        if (stack.length === 0) {
+          candidates.push(text.slice(start, index + 1));
+          break;
+        }
+      }
+    }
+    if (candidates.length >= 20) break;
   }
+  return candidates;
+}
 
-  s = s.replace(/,\s*([}\]])/g, '$1');
-  s = s.replace(/[\x00-\x1f]/g, c => c === '\n' || c === '\r' || c === '\t' ? c : '');
-
-  return s;
+function _repairJsonSyntax(candidate) {
+  let output = "";
+  let inString = false;
+  for (let index = 0; index < candidate.length; index++) {
+    const char = candidate[index];
+    if (inString) {
+      if (char === "\\") {
+        const next = candidate[index + 1];
+        if (next === undefined) {
+          output += "\\\\";
+          continue;
+        }
+        if (next === "u" && /^[0-9a-f]{4}$/i.test(candidate.slice(index + 2, index + 6))) {
+          output += candidate.slice(index, index + 6);
+          index += 5;
+          continue;
+        }
+        if ('"\\/bfnrt'.includes(next)) {
+          output += char + next;
+          index++;
+          continue;
+        }
+        output += "\\\\";
+        continue;
+      }
+      if (char === '"') {
+        inString = false;
+        output += char;
+        continue;
+      }
+      const code = char.charCodeAt(0);
+      if (code < 32) {
+        const escapes = { "\n": "\\n", "\r": "\\r", "\t": "\\t" };
+        output += escapes[char] || "\\u" + code.toString(16).padStart(4, "0");
+      } else {
+        output += char;
+      }
+      continue;
+    }
+    if (char === '"') {
+      inString = true;
+      output += char;
+      continue;
+    }
+    if (char === ",") {
+      let lookahead = index + 1;
+      while (lookahead < candidate.length && /\s/.test(candidate[lookahead])) lookahead++;
+      if (candidate[lookahead] === "}" || candidate[lookahead] === "]") continue;
+    }
+    output += char;
+  }
+  return output;
 }
 
 function tryParseJson(text) {
-  const sanitized = sanitizeJson(text);
-  if (!sanitized) return null;
-
-  try {
-    return JSON.parse(sanitized);
-  } catch (e1) {
-    console.error(`[WARN] JSON parse attempt 1 failed: ${e1.message}`);
+  if (typeof text !== "string" || !text.trim()) {
+    return null;
   }
-
-  try {
-    let fixed = sanitized;
-    fixed = fixed.replace(/\\(?!["\\/bfnrtu])/g, '\\\\');
-    fixed = fixed.replace(/"\s*\n\s*"/g, '", "');
-    return JSON.parse(fixed);
-  } catch (e2) {
-    console.error(`[WARN] JSON parse attempt 2 (escape fix) failed: ${e2.message}`);
-  }
-
-  try {
-    let fixed = sanitized;
-    fixed = fixed.replace(/"summary"\s*:\s*"((?:[^"\\]|\\.)*)"\s*,\s*"summary"/g, '"summary": "$1", "summary2"');
-    const depthFix = (s) => {
-      let d = 0;
-      for (let i = 0; i < s.length; i++) {
-        if (s[i] === '{' || s[i] === '[') d++;
-        if (s[i] === '}' || s[i] === ']') d--;
+  const source = text.replace(/^\uFEFF/, "").trim();
+  const seen = new Set();
+  let attempt = 0;
+  for (const candidate of _extractJsonCandidates(source)) {
+    for (const variant of [candidate, _repairJsonSyntax(candidate)]) {
+      if (seen.has(variant)) continue;
+      seen.add(variant);
+      attempt++;
+      try {
+        const parsed = JSON.parse(variant);
+        const report = Array.isArray(parsed)
+          ? parsed.find(_isReportObject)
+          : parsed;
+        if (_isReportObject(report)) {
+          console.error("[INFO] JSON parsed successfully (candidate " + attempt + ")");
+          return report;
+        }
+      } catch (error) {
+        console.error("[WARN] JSON parse candidate " + attempt + " failed: " + error.message);
       }
-      if (d > 0) s += ']'.repeat(d);
-      return s;
-    };
-    return JSON.parse(depthFix(fixed));
-  } catch (e3) {
-    console.error(`[WARN] JSON parse attempt 3 (depth fix) failed: ${e3.message}`);
+    }
   }
-
-  try {
-    let fixed = sanitized;
-    fixed = fixed.replace(/"title_zh"\s*:\s*"((?:[^"\\]|\\.)*)"\s*,\s*"title_zh"/g, (m, v) => `"title_zh": "${v}"`);
-    const braceCount = (s) => [...s].reduce((a, c) => a + (c === '{' ? 1 : c === '}' ? -1 : 0), 0);
-    const bracketCount = (s) => [...s].reduce((a, c) => a + (c === '[' ? 1 : c === ']' ? -1 : 0), 0);
-    const bd = braceCount(fixed);
-    const bk = bracketCount(fixed);
-    if (bd < 0) fixed = '{'.repeat(-bd) + fixed;
-    if (bd > 0) fixed = fixed + '}'.repeat(bd);
-    if (bk < 0) fixed = '['.repeat(-bk) + fixed;
-    if (bk > 0) fixed = fixed + ']'.repeat(bk);
-    return JSON.parse(fixed);
-  } catch (e4) {
-    console.error(`[WARN] JSON parse attempt 4 (balance fix) failed: ${e4.message}`);
-  }
-
+  console.error("[WARN] No valid report JSON object found");
   return null;
 }
 
