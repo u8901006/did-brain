@@ -4,7 +4,7 @@ import { writeFileSync, readFileSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 
 const API_BASE = process.env.NVIDIA_API_BASE || 'https://integrate.api.nvidia.com/v1';
-const MODELS = ['nvidia/nemotron-3.5-super-vl-120b-a12b', 'z-ai/glm-5.3-flash'];
+const MODELS = ['nvidia/nemotron-3.5-super-vl-120b-a12b', 'nvidia/nemotron-3.5-lightning-30b-a3b'];
 const MAX_TOKENS = 16384;
 const TIMEOUT_MS = 660000;
 
