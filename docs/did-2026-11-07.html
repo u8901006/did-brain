@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年11月7日</title>
+<meta name="description" content="2026年11月7日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年11月7日</span>
+        <span class="badge badge-count">📊 41 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日文獻整體以生物醫學基礎研究為主，純精神科/解離症臨床文獻較少。其中神經生物學與創傷相關的述說與回顧類論文最具參考價值，可作為理解 DID 與解離症神經機制的跨領域橋樑。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">🧠</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>PTSD、解離疾患與邊緣葉癲癇的共同臨床與神經特徵：敘述性回顧</h3>
+          <p class="journal-source">Neurobiology of stress · Shared clinical and neural features of PTSD, dissociative disorders, and limbic epilepsy: a narrative review.</p>
+          <p>本研究指出 PTSD 與解離疾患（包含失自我感、失真實感）與邊緣葉癲癇在臨床症狀上高度重疊，提示邊緣系統功能異常可能為解離症狀提供神經生物學上的因果架構，具有重要臨床啟發意義。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">PTSD、解離疾患患者與人類邊緣葉癲癇病例，以及邊緣迴路動物模型</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">敘述性回顧（未進行直接介入）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同族群與模型間的症狀與神經特徵比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">PTSD、解離症狀與邊緣葉癲癇在侵入性記憶、情緒失調、失自我感/失真實感、意識障礙及功能性運動現象等方面呈現顯著重疊</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">創傷</span><span class="tag">PTSD</span><span class="tag">神經生物學</span><span class="tag">失自我感</span><span class="tag">失真實感</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42990611/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#2</span>
+            <span class="emoji-icon">🩺</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>心血管外科醫師倦怠現象從培訓到諮詢階段的流行率：一篇元分析</h3>
+          <p class="journal-source">The Journal of surgical research · Prevalence of Burnout in Cardiothoracic Surgery From Training to Consultancy: A Meta-Analysis.</p>
+          <p>心胸外科醫師（含住院醫師與專科醫師）倦怠比率極高，其中去人格化（depersonalization）為 Maslach 倦怠量表的核心子量表之一，提示醫護團隊解離相關症狀需受重視。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">心胸外科住院醫師與專科醫師</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">元分析（未進行直接介入）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同職涯階段、地理區域與倦怠子量表</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">合併倦怠流行率為 50.8%，去人格化（depersonalization）比率達 39.9%</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">失自我感</span><span class="tag">評估診斷</span><span class="tag">住院照護</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42987707/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#3</span>
+            <span class="emoji-icon">🦟</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>單一受體引導年輕雌蚊前往花朵：氣味轉換的神經機制</h3>
+          <p class="journal-source">Trends in parasitology · A single receptor sends young female mosquitoes to flowers.</p>
+          <p>本研究揭示單一嗅覺受體介導行為切換（switching）機制，雖非人類解離症直接相關，但其「行為切換」概念可啟發對 DID 人格狀態轉換的跨物種神經機制思考。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">年輕雌性埃及斑蚊（Aedes aegypti）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">單一嗅覺受體 Or117 的功能檢測</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同齡階與交配狀態下的受體表達與行為反應</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">Or117 偵測花朵樟腦，且其表達隨年齡增長與交配而下降，導致行為從覓花切換至吸血</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988649/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#4</span>
+            <span class="emoji-icon">🔬</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>反映系統中切換執行功能的多機制：具有自適應時間常數的循環神經網路研究</h3>
+          <p class="journal-source">Biological cybernetics · Multiple mechanisms of rhythm switching in recurrent neural networks with adaptive time constants.</p>
+          <p>透過循環神經網路模型解析不同頻率腦波切換機制，為理解大腦網路中「狀態轉換」的計算神經科學基礎提供理論框架，與解離性身份轉換的神經假說具概念連結。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">20 個獨立訓練的洩漏整併循環神經網路</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">四種頻帶（theta、alpha、beta、gamma）節奏切換任務</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同頻率節奏的神經機制與時間常數</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">節奏切換由多種共存機制支撐，包括活躍子群體更替、網路整體基線偏移與神經元間相位重組</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">神經影像</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42993300/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#5</span>
+            <span class="emoji-icon">💊</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>組織蛋白聚醣酶基模在身體相關行為中的功能與疾病關聯：系統性回顧</h3>
+          <p class="journal-source">Journal of cardiovascular pharmacology · Micropeptides: challenges and opportunities in cardiovascular pharmacology.</p>
+          <p>雖然標題與心血管藥理相關，但文中提及的微肽在組織功能調節與疾病機制中的作用，可間接啟發解離症與身體化症狀的生物標記研究方向。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">心血管疾病動物模型與細胞研究</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">微肽（micropeptides）的生物學功能與藥理潛力</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同微肽對心肌鈣處理、線粒體生物能與血管重塑的影響</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">微肽可能成為心臟衰竭、缺血再灌注傷害與血管重塑等疾病的新治療標靶</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">生物標記</span><span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42993633/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#6</span>
+            <span class="emoji-icon">🧪</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>分數等值判斷中表徵更新優於規則切換：ERP 與多尺度熵的證據</h3>
+          <p class="journal-source">Neuroimage. Reports · Representation updating outweighs rule switching in fraction equivalence: Evidence from ERPs and multiscale entropy.</p>
+          <p>本研究發現執行功能中「表徵更新」對於分數等值判斷的影響大於「規則切換」，提供理解解離症患者認知轉換時腦電特徵的實驗證據。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">30 名成年參與者</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">兩階段分數等值任務（符號與圖形表徵）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">切換條件與非切換條件，以及符號對圖形表徵</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">切換條件誘發更大的 N2 與 P3 振幅，表徵更新對表現影響大於規則切換</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">評估診斷</span><span class="tag">神經影像</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42990701/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#7</span>
+            <span class="emoji-icon">📻</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>腦部功能磁共振造影中的掃描器聲音影響</h3>
+          <p class="journal-source">Magnetic resonance imaging · Scanner acoustic noise in resting-state fMRI.</p>
+          <p>探討靜態功能磁共振造影時掃描器噪音對腦功能連結估計的影響，提醒解離症神經影像研究在設計與解讀時需控制聲音變因。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">接受靜態功能磁共振造影的受試者</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">不同掃描器噪音條件（安靜序列與標準回聲平面成像）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">安靜與標準掃描條件下的腦功能連結與生理指標</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">掃描器噪音可改變靜態功能連結估計，但方向並不一致，需控制共變因素</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">神經影像</span><span class="tag">評估診斷</span><span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988180/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#8</span>
+            <span class="emoji-icon">🧪</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>HIV 老年病患腎功能下降的年度變化與預測因子：於烏干達的隊列研究</h3>
+          <p class="journal-source">Research square · Annual change in estimated glomerular filtration rate and predictors of rapid kidney function decline among antiretroviral therapy-experienced older people with HIV in Uganda, sub-Saharan Africa: A cohort study.</p>
+          <p>本隊列研究追蹤接受抗逆轉病毒治療的 HIV 老年病患腎功能變化，雖非精神科文獻，但作為慢性疾病長期追蹤的方法學範例，可供解離症長期照護研究參考。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">500 名 60 歲以上接受抗逆轉病毒治療的 HIV 病患</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">每年測量血清肌酐並估計腎絲球濾過率</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同基線特徵下的腎功能快速下降風險</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">男性、較長的替諾福韋二氟卿 fumarate 暴露時間與乙型肝炎表面抗原陽性與快速腎功能下降風險增加相關</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42990732/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">📚</span>其他值得關注的文獻</div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧪</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>執行功能在分數等值任務中的表徵更新與規則切換：ERP 與多尺度熵證據</h3>
+          <p class="journal-source">Neuroimage. Reports</p>
+          <p>切換條件誘發較大的 N2 與 P3 振幅，表徵更新對表現影響大於規則切換。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">評估診斷</span><span class="tag">神經影像</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42990701/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>微肽：心血管藥理學的挑戰與機遇</h3>
+          <p class="journal-source">Journal of cardiovascular pharmacology</p>
+          <p>微肽可能成為心臟衰竭、缺血再灌注傷害與血管重塑等疾病的新治療標靶。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span><span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42993633/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🦟</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>單一受體引導年輕雌蚊前往花朵：氣味轉換的神經機制</h3>
+          <p class="journal-source">Trends in parasitology</p>
+          <p>Or117 嗅覺受體偵測花朵樟腦，且其表達隨年齡與交配下降，導致行為從覓花切換至吸血。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988649/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧪</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>腎功能下降的年度變化與預測因子：於烏干達 HIV 老年病患的隊列研究</h3>
+          <p class="journal-source">Research square</p>
+          <p>男性、較長的 TDF 暴露時間與乙型肝炎表面抗原陽性與快速腎功能下降風險增加相關。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42990732/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📻</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>腦部功能磁共振造影中的掃描器聲音影響</h3>
+          <p class="journal-source">Magnetic resonance imaging</p>
+          <p>掃描器噪音可改變靜態功能連結估計，但方向並不一致，需控制共變因素。</p>
+          <div class="card-footer">
+            <span class="tag">神經影像</span><span class="tag">評估診斷</span><span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988180/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>智慧發光材料：從基本發光體到刺激響應發光系統</h3>
+          <p class="journal-source">Advanced materials (Deerfield Beach, Fla.)</p>
+          <p>綜述智慧發光材料在資訊安全、可穿戴電子與生物光子學等領域的應用進展。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42989521/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🤰</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>孕期單株抗體藥物發放的描述性分析：義大利電子健康記錄研究</h3>
+          <p class="journal-source">Pharmacoepidemiology and drug safety</p>
+          <p>孕期單株抗體藥物發放顯著增加，停藥比例隨時間減少，反映安全性證據累積與指南變化。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42989522/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>脊髓性肌肉萎縮症中神經纖維作為疾病活動與治療反應生物標記</h3>
+          <p class="journal-source">European journal of neurology</p>
+          <p>血漿神經纖維輕鏈在脊髓性肌肉萎縮症治療後顯著下降，年齡是減少幅度的最強預測因子。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42989726/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>費洛離子輔助、電荷驅動多晶相工程用於多級電阻記憶裝置</h3>
+          <p class="journal-source">Advanced materials (Deerfield Beach, Fla.)</p>
+          <p>透過強鐵離子基板實現原子薄多晶材料的半導體與金屬相可逆切換，並應用於類神經運算。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42992368/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🫀</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>M EX3B 導致 VCAN 異常表達並加劇胸主動脈夾層，通過血管平滑肌細胞表型轉變</h3>
+          <p class="journal-source">International journal of molecular medicine</p>
+          <p>M EX3B 調節 VCAN mRNA 穩定性，影響血管平滑肌細胞表型，進而與胸主動脈夾層發展相關。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42992552/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>智慧醫院安全傳訊的跨學科視角：醫師、先進執業臨床醫師與護師</h3>
+          <p class="journal-source">Journal of hospital medicine</p>
+          <p>安全傳訊雖增強照護協調，但高訊息量與中斷可能導致照護團隊緊張與認知負荷。</p>
+          <div class="card-footer">
+            <span class="tag">住院照護</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42990061/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩺</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>心臟外科醫師倦怠從培訓到諮詢階段的流行率：元分析</h3>
+          <p class="journal-source">The Journal of surgical research</p>
+          <p>心胸外科醫師倦怠比率極高，去人格化（depersonalization）比率達 39.9%。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">失自我感</span><span class="tag">評估診斷</span><span class="tag">住院照護</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42987707/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-high utility-sm">高</span>
+          </div>
+          <h3>PTSD、解離疾患與邊緣葉癲癇的共同臨床與神經特徵：敘述性回顧</h3>
+          <p class="journal-source">Neurobiology of stress</p>
+          <p>PTSD 與解離疾患與邊緣葉癲癇在臨床症狀上高度重疊，提示邊緣系統功能異常可能為解離症狀提供神經生物學架構。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">創傷</span><span class="tag">PTSD</span><span class="tag">神經生物學</span><span class="tag">失自我感</span><span class="tag">失真實感</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42990611/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>多機制節奏切換在具有自適應時間常數的循環神經網路中</h3>
+          <p class="journal-source">Biological cybernetics</p>
+          <p>節奏切換由多種共存機制支撐，包括活躍子群體更替、網路基線偏移與神經元間相位重組。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">神經影像</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42993300/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>反映執行功能於任務切換準確度的試驗與序列層級變異</h3>
+          <p class="journal-source">Psychological research</p>
+          <p>反應時間變異度與獨立任務切換範例中的準確度呈負相關，反映認知控制的穩定性。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42993342/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>Ticagrelor 與 Clopidogrel 在急性心肌梗塞併發心源性休克老年病患中的住院早期結果關聯</h3>
+          <p class="journal-source">Cardiovascular diagnosis and therapy</p>
+          <p>Ticagrelor 與 clopidogrel 相比，與較高的住院前 15 天全因死亡率與主要不良心血管事件相關。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42991055/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚖️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>交感迷走失衡與胰島素阻抗：自主神經系統作為打破雙向致病循環的交匯治療標的</h3>
+          <p class="journal-source">Diabetes, metabolic syndrome and obesity : targets and therapy</p>
+          <p>自主神經系統與胰島素阻抗形成雙向致病循環，自主神經重整可能成為代謝疾病治療標的。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42991162/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>智慧發光材料：從基本發光體到刺激響應發光系統</h3>
+          <p class="journal-source">Advanced materials (Deerfield Beach, Fla.)</p>
+          <p>智慧發光材料可將外部刺激轉換為可程式化的光子輸出，適用於資訊安全與可穿戴電子。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42989521/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>費洛離子輔助、電荷驅動多晶相工程用於多級電阻記憶裝置</h3>
+          <p class="journal-source">Advanced materials (Deerfield Beach, Fla.)</p>
+          <p>透過強鐵離子基板實現多晶材料相切換，並應用於類神經運算裝置。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42992368/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔍</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>酚蒽醌-Naphthol 螢光標記物用於安全與法醫鑑定的刺激響應材料</h3>
+          <p class="journal-source">ACS omega</p>
+          <p>該材料具可逆的酸鹼與機械致色變，可用於隱形指紋可視化與防偽驗證。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42991888/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">♻️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>廢棄塑膠作為電致變色應用的柔性電極之再生利用</h3>
+          <p class="journal-source">ACS omega</p>
+          <p>將廢棄飲料杯塑膠轉化為具有電致變色性質的柔性電極，具備快速切換與穩定性。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42991554/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🦟</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>單一受體引導年輕雌蚊前往花朵：氣味轉換的神經機制</h3>
+          <p class="journal-source">Trends in parasitology</p>
+          <p>Or117 嗅覺受體偵測花朵樟腦，且其表達隨年齡與交配下降，導致行為從覓花切換至吸血。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988649/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩻</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>胰腺導管腺癌惡性程度非侵入性預測：雙能 CT 新指數</h3>
+          <p class="journal-source">Academic radiology</p>
+          <p>整合 3D 碘濃度參數與 CA125 的模型可預測胰腺癌惡性程度，AUC 約為 0.8。</p>
+          <div class="card-footer">
+            <span class="tag">神經影像</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988510/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>智慧發光材料：從基本發光體到刺激響應發光系統</h3>
+          <p class="journal-source">Advanced materials (Deerfield Beach, Fla.)</p>
+          <p>綜述智慧發光材料在生物光子學與資訊安全領域的最新進展。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42989521/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>高頻介電方法追蹤鐵電裝置運轉中的網域結構演化</h3>
+          <p class="journal-source">Small methods</p>
+          <p>以微秒級頻域介電訊號即時追蹤鐵電網域壁動態，突破傳統影像技術限制。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42989469/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩺</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>心血管外科醫師倦怠從培訓到諮詢階段的流行率：元分析</h3>
+          <p class="journal-source">The Journal of surgical research</p>
+          <p>心胸外科醫師倦怠比率極高，去人格化（depersonalization）比率達 39.9%。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">失自我感</span><span class="tag">評估診斷</span><span class="tag">住院照護</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42987707/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>脊髓性肌肉萎縮症中神經纖維作為疾病活動與治療反應生物標記</h3>
+          <p class="journal-source">European journal of neurology</p>
+          <p>血漿神經纖維輕鏈在脊髓性肌肉萎縮症治療後顯著下降，年齡是減少幅度的最強預測因子。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42989726/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>直接 RNA 測序揭示心臟衰竭中 m6A 全景與 SYNPO2L RNA 同構體調節機制</h3>
+          <p class="journal-source">Nature cardiovascular research</p>
+          <p>在心臟衰竭小鼠模型中識別數千個差異甲基化位點，並揭示 SYNPO2L 轉錄本的同構體切換與 m6A 調節機制。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span><span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988928/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧪</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>適體可介導構象 DNA 識別的獨特模式</h3>
+          <p class="journal-source">Nature chemistry</p>
+          <p>配體誘導的構象重組可作為核酸識別的表位，擴展 DNA 偵測分子特徵。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988875/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>氫介導、電壓可調的 SmNiO3 金屬絕緣體轉變在室溫下的機制</h3>
+          <p class="journal-source">ACS applied materials & interfaces</p>
+          <p>氫摻雜誘導 SmNiO3 薄膜電阻率改變超過三個數量級，並展現類神經元件的類比電阻切換。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988721/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🦟</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>單一受體引導年輕雌蚊前往花朵：氣味轉換的神經機制</h3>
+          <p class="journal-source">Trends in parasitology</p>
+          <p>Or117 嗅覺受體偵測花朵樟腦，且其表達隨年齡與交配下降，導致行為從覓花切換至吸血。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988649/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩻</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>胰腺導管腺癌惡性程度非侵入性預測：雙能 CT 新指數</h3>
+          <p class="journal-source">Academic radiology</p>
+          <p>整合 3D 碘濃度參數與 CA125 的模型可預測胰腺癌惡性程度，AUC 約為 0.8。</p>
+          <div class="card-footer">
+            <span class="tag">神經影像</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988510/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📻</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>腦部功能磁共振造影中的掃描器聲音影響</h3>
+          <p class="journal-source">Magnetic resonance imaging</p>
+          <p>掃描器噪音可改變靜態功能連結估計，但方向並不一致，需控制共變因素。</p>
+          <div class="card-footer">
+            <span class="tag">神經影像</span><span class="tag">評估診斷</span><span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42988180/" target="_blank">PubMed →</a>
+          </div>
+        </div></div>
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+            <div class="topic-row">
+              <span class="topic-name">解離症</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">創傷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:13%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">PTSD</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:13%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">神經生物學</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:38%"></div></div>
+              <span class="topic-count">3</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">評估診斷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">8</span>
+            </div></div>
+
+  <div class="keywords-section section"><div class="section-title"><span class="section-icon">🏷️</span>關鍵字</div><div class="keywords"><span class="keyword">解離症</span><span class="keyword">創傷</span><span class="keyword">PTSD</span><span class="keyword">神經生物學</span><span class="keyword">評估診斷</span></div></div>
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：nvidia/nemotron-3.5-super-vl-120b-a12b</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
