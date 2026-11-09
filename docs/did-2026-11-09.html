@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年11月9日</title>
+<meta name="description" content="2026年11月9日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年11月9日</span>
+        <span class="badge badge-count">📊 19 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日抓取之19篇文獻中，僅1篇與解離症直接相關，餘多為皮膚科、眼科、內分泌、材料科學等非精神醫學領域，DID/解離症相關研究資源仍顯稀缺。唯一相關文獻為VR暴露與失真實感（失現實感）症狀之個案報告，提醒臨床需注意沉浸式數位暴露後可能出現延遲性解離樣神經症狀，並提示將標準化睡眠與解離評估納入高風險族群監測。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">🧩</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>沉浸式虛擬實境暴露與伴隨延遲恢復之腦幹先兆型偏頭痛樣表現：個案報告</h3>
+          <p class="journal-source">Clinical case reports · Immersive Virtual Reality Exposure Associated With a Migraine With Brainstem Aura-Like Presentation and Prolonged Recovery: A Case Report</p>
+          <p>一例32歲男性於30分鐘沉浸式VR暴露後出現急迫定向力障礙、眩暈、認知雲霧、失真實感與感覺障礙，症狀部分好轉後於隔日感官過度刺激時復發，並持續約兩週之嗜睡、認知疲勞與感覺過敏，最終漸進完全緩解，提示臨床須對沉浸式數位暴露後之延遲性解離樣神經症狀保持警覺。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">一名32歲男性，無明顯既往偏頭痛病史，於沉浸式虛擬實境（VR）暴露後出現症狀</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">30分鐘沉浸式虛擬實境暴露（無對照，僅案例描述）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照組；以症狀自然病程與3、6個月追蹤無復發作為臨床參照</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">出現失真實感（derealization）、定向力障礙、眩暈、認知雲霧及感覺障礙，神經耳科檢查無異常，症狀持續約兩週後完全緩解，3個月與6個月追蹤無復發</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">失真實感</span><span class="tag">案例報告</span><span class="tag">解離症</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42997322/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#2</span>
+            <span class="emoji-icon">😴</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>睡眠作為臨床高風險族群之脆弱性標記：多模式系統性回顧</h3>
+          <p class="journal-source">Psychiatry research · Sleep as a vulnerability marker in clinical high-risk populations. a multimodal systematic review.</p>
+          <p>系統性回顧26篇研究指出睡眠障礙影響59-80%臨床高風險個體，且多導睡眠圖之梭體參數與NREM伽瑪波力等生物標記可預測陽性症狀惡化、轉診與自殺念頭，同時經驗取樣發現夜間覺醒可透過早晨負面情緒中介預測隔日偏執與失真實感。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">透過驗證工具界定之臨床高風險（CHR）精神病危險族群，共26篇納入研究</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">睡眠評估（包括行動紀錄儀、經驗取樣、高密度腦電圖多導睡眠圖、神經影像等多模式）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">睡眠障礙存在 vs 不存在，或以追蹤期間症狀轉診與嚴重程度比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">睡眠障礙預測症狀嚴重程度隨時間惡化、轉診加速、自殺念頭；多導睡眠圖呈現前額梭體時間縮短、NREM期伽瑪力升高與慢波密度降低；夜間覺醒可預測隔日偏執與失真實感</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">失真實感</span><span class="tag">評估診斷</span><span class="tag">生物標記</span><span class="tag">神經生物學</span><span class="tag">兒童青少年</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42998507/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#3</span>
+            <span class="emoji-icon">🧠</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>基於行為分析（ABA）服務專業人員之職業倦怠：巴西橫斷面研究</h3>
+          <p class="journal-source">Journal of autism and developmental disorders · Burnout Among Professionals in ABA-Based Services in Brazil.</p>
+          <p>巴西應用行為分析（ABA）服務專業人員中高度情緒耗竭（77.4%）與低個人成就感（89.9%）盛行，職位越高（行為技術員→協調員→主管）與同時管理超過10個案例與倦怠嚴重程度正相關，顯示機構層級支持與督導品質對防止專業人員倦怠至關重要。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">巴西不同地區之應用行為分析（ABA）服務專業人員（橫斷面問卷調查）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無干預；以馬斯拉赫倦怠量表-人類服務版（MBI-HSS）評估情緒耗竭、去人格化與個人成就感</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同專業角色、年齡、學歷、薪資範圍與案件量之分組比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">高情緒耗竭77.4%、低個人成就感89.9%、高去人格化34.1%；隨職位升級與案件量增加，倦怠最嚴重類別比例遞增；薪資範圍間分佈相似</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">心理治療</span><span class="tag">評估診斷</span><span class="tag">成人精神醫學</span><span class="tag">創傷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42998191/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#4</span>
+            <span class="emoji-icon">💊</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>部分脂肪營養不良患者類促胰島素受體激動劑與甲基瘦素治療效果比較：回顧性研究</h3>
+          <p class="journal-source">Journal of the Endocrine Society · Effectiveness of incretin receptor agonists compared to metreleptin in partial lipodystrophy: a retrospective study.</p>
+          <p>在12名部分脂肪營養不良女性患者中，類促胰島素受體激動劑（GLP-1/GIP）治療期間血糖素A1c顯著優於甲基瘦素（平均降低1.1%），並伴隨適度體重下降，其他代謝參數差異不顯著，提示類促胰島素藥物可能為糖尿病控制的較佳選擇。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">12名部分脂肪營養不良女性患者，年齡16-85歲，除1人外均合併糖尿病</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">甲基瘦素治療（平均104±38個月）後轉為類促胰島素受體激動劑治療（平均32±13個月），1名患者兩者併用</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">甲基瘦素治療時期 vs 類促胰島素治療時期（同一受試者內部比較）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">類促胰島素期間血糖素A1c顯著降低（平均差異-1.1±0.4%，P=.005），伴隨適度體重減輕（平均差異-1.5±3.9 kg，P=.046），其他大多數代謝參數無顯著差異</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42999395/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#5</span>
+            <span class="emoji-icon">📊</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>人乳頭狀病毒（HPV）年齡結構動態在隨機切換流行病學模式下之研究</h3>
+          <p class="journal-source">Journal of mathematical biology · Age-structured HPV dynamics under randomly switching epidemiological regimes.</p>
+          <p>本研究建立一個年齡結構化HPV傳播模型，將流行病學條件的時間變異以有限狀態連續時間馬可夫鏈表示，利用半群方法推導入侵閾值，並證明當隨機基本傳染數低於1時感染族群將指數級滅絕，高於1時則線化一階矩動態不穩定，為理解時間變異流行病環境下HPV長期傳播提供嚴謹數學框架。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">無具體人群；理論數學模型之HPV傳播動態</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">隨機切換流行病學模式（以有限狀態連續時間馬可夫鏈代表）下的年齡結構化HPV傳播系統</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同流行病學模式間之隨機切換與固定模式之比較；快速與慢速切換極限</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">隨機入侵閾值與各模式基本傳染數之關聯；隨機基本傳染數<1時感染族群平均與幾乎必然指數滅絕；>1時線化一階矩動態不穩定</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42998112/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#6</span>
+            <span class="emoji-icon">🏥</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>雙能量電腦斷層掃描作為胰腺導管腺癌評估替代灌注電腦斷層之研究</h3>
+          <p class="journal-source">Journal of gastrointestinal oncology · Dual-energy computed tomography as an alternative to computed tomography perfusion for assessment of pancreatic ductal adenocarcinoma.</p>
+          <p>在47例組織學確診胰腺導管腺癌患者中，雙能量CT衍生之碘濃度與正規化碘濃度與灌注CT之血流、血量等灌注參數呈現相關，且腫瘤與非腫瘤胰臟組織之碘濃度差異具診斷區辨力（ROC曲線下面積未完全報告），提示雙能量CT可能作為無額外輻射劑量之替代灌注評估工具。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">47名組織學確診胰腺導管腺癌（PDAC）患者</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">雙能量電腦斷層掃描（DECT）與動態灌注電腦斷層（CTP）同步檢查</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">DECT衍生碘濃度（IC/NIC）vs CTP衍生灌注參數（血流BF、血量BV等）之相關與診斷性能比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">腫瘤病灶門脈期與延遲期碘濃度分別為15.21±5.09及15.98±4.71 mg/mL，正規化碘濃度為0.31±0.10及0.51±0.14；非腫瘤胰臟實質組織碘濃度較高；腫瘤血流與血量顯著低於非腫瘤組織；ROC分析評估診斷區辨能力</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42996559/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#7</span>
+            <span class="emoji-icon">🦠</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>非包膜病毒從類病毒顆粒到包裝病毒顆粒之生物物理特性初探</h3>
+          <p class="journal-source">Current opinion in virology · First contact: biophysical insights into non-enveloped viruses from VLPs to packed virions.</p>
+          <p>本綜述整合解析 ultracentrifugation、光散射、質譜、SAXS、X-ray crystallography、冷凍電子顯微鏡與原子力顯微鏡等標誌法，用於評估非包膜病毒與類病毒顆粒之大小、空/滿比例、組裝品質、結構穩定性與組後修飾，為疫苗、基因遞送與納米生物技術中病毒顆粒之合理工程設計提供全面框架。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">非包膜病毒與病毒類似顆粒（VLPs）；無臨床人類受試者</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無臨床干預；應用多種標誌法（分析型 ultracentrifugation、光散射、質譜、SAXS、X-ray crystallography、cryo-EM、原子力顯微鏡等）評估病毒顆粒物理特性</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同表徵技術之互補資訊與適用場景比較；空殼vs滿載病毒顆粒之結構差異</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">建立一個評估完整病毒顆粒大小、質量、結構組織與穩定性之全面標誌法框架，支持疫苗與基因遞送載體之理性設計</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42998315/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#8</span>
+            <span class="emoji-icon">🗺️</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>不同參考框架之微型地圖對無極性3D空間導航之影響：行為與fNIRS研究</h3>
+          <p class="journal-source">Ergonomics · Effects of mini-maps with different reference frames on polarity-free 3D spatial navigation: a behavioural and fNIRS study.</p>
+          <p>在對稱虛擬3D空間中，31名參與者完成無地圖、世界中心靜態、世界中心動態與自我中心動態四種導航條件，結果顯示自我中心動態地圖（具軌跡追蹤與即時航向對齊）因降低路徑積分需求與參考框架切換成本，而達成更高準確度、更低工作負荷與更佳可用性，為太空飛行、深海作業與虛擬實境之導航介面設計提供實證。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">31名健康成人參與者</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">四種微型地圖條件：無地圖、世界中心靜態、世界中心動態、自我中心動態（EGO）地圖</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">四種導航條件間之行為表現（準確度、反應時間）、主觀工作負荷與右梭迴去氧血紅蛋白（fNIRS）比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">自我中心動態地圖顯著提升準確度、降低右梭迴去氧血紅蛋白（代表較低認知負荷）、降低主觀工作負荷並提升可用性，優於其他地圖條件與無地圖組</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42998030/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#9</span>
+            <span class="emoji-icon">🔬</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>溶劑控制鋅酞菁-黃酮偶合體間電子轉移與II型光敏化之切換</h3>
+          <p class="journal-source">The Journal of organic chemistry · Solvent-Controlled Switching between Electron Transfer and Type II Photosensitization in a Zinc Phthalocyanine-Flavonol Pair.</p>
+          <p>研究發現鋅酞菁與3-羥基黃酮在非極性二氯甲烷中形成1:1錯合物並發生光誘發電子轉移，而在二甲基亞 sulphide（DMSO）中溶劑配位抑制錯合物形成，II型光敏化成為唯一反應路徑；此外還觀察到黃酮氧化生成一氧化碳，以及三線態三線態熄滅與質子耦合能量轉移等機轉，揭示溶劑對光物理性質之關鍵調控作用。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">無人類受試者；鋅酞菁與3-羥基黃酮（flavonol）衍生物之分子系統</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">改變溶劑性質（非極性二氯甲烷vs極性DMSO）以調控鋅酞菁-黃酮偶合體之光反應路徑</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同溶劑條件下之螢光熄滅機轉、黃酮發光與三線態反應性、一氧化碳生成與光敏化路徑之比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">二氯甲烷中形成1:1錯合物並發生近擴散極限螢光熄滅與光誘發電子轉移；DMSO中抑制錯合物形成，II型光敏化主導黃酮氧化並產生一氧化碳；去氧DMSO中三線態被黃酮熄滅；質子耦合能量轉移雖在能量上可行但效率低</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42998040/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#10</span>
+            <span class="emoji-icon">💡</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>平面波導中多模式激極子工程實現激子可調相位控制與超強耦合</h3>
+          <p class="journal-source">ACS photonics · Exciton-Tunable Phase Control and Superstrong Coupling through Multimode Polariton Engineering in Planar Waveguides.</p>
+          <p>研究利用嚴格耦合波分析與耦合振盪子模型，顯示可見光半導體波導中多模式激子-光子耦合可從傳統多模式強耦合延伸至超強耦合模式，當躍耦耦合強度接近鄰近光子模式間距時，正交電磁模式雜化產生可調極化子分支，微小激子共振位移即可在數十微米傳播長度內產生π相位移，為緊湊型相位與強度控制之整合光電架構提供新平台。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">無人類受試者；可見光半導體波導中之激子-極光子系統</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">多模式激子-光子耦合工程；將主動材料限定於光子模式強重疊之次區域以破壞正交性</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">傳統多模式強耦合vs超強耦合模式；不同極化子分支之傳播常數對激子共振位移之敏感度比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42997504/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#11</span>
+            <span class="emoji-icon">⚕️</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>單一智慧奈米材料用於出血與血栓近紅外線可切換診斷治療一体化：光聲成像研究</h3>
+          <p class="journal-source">Small science · A Single Smart Nanomaterial for Near-Infrared-Switchable Theranostics of Hemorrhage and Thrombosis via Photoacoustic Imaging.</p>
+          <p>開發以Ag單原子與奈米粒子修飾之NiFe層狀雙氫氧化物為基礎的智慧奈米材料，可結合纖溶酶原激活劑達成快速止血（體外纖溶減少約30%、體內顱內與腹腔出血模型血液損失減少約50%），並於脈衝式近紅外線照射下透過光電效應增強止血效果，在持續近紅外線照射下透過光熱效應失活凝塊中凝血酶並改變纖維蛋白結構以促進受控溶栓；該材料亦能透過光聲成像即時可視化活動性出血（低至3微升），在顱內出血模型中得到驗證，顯示其在動態血管急症管理中的概念驗證潛力。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">動物出血模型（顱內與腹腔出血）、動脈模型、健康與出血患者之冷凍保存人類血液樣本；無直接臨床人體試驗</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">AgSA+NP/NiFe-LDH智慧奈米材料結合纖溶酶原激活劑，並以脈衝式或持續式近紅外線（NIR）照射外部調控止血與溶栓；光聲成像即時可視化活動性出血</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">未經NIR照射組 vs NIR照射組；止血效能與血液損失比較；活動性出血偵測極限比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">NIR照射組血液損失減少約50%；光聲成像可偵測低至3微升之活動性出血；動脈模型與人類血液樣本中持續止血與受控溶栓功能均獲得驗證</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42996816/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#12</span>
+            <span class="emoji-icon">⚡</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>質子轉移鐵電體具有高切換耐久性</h3>
+          <p class="journal-source">Small science · Proton-Transfer Ferroelectrics With High Switching Endurance.</p>
+          <p>本研究展示以低溫沉積後受限結晶（LDRC）法生長之高結晶2-甲基苯並咪唑（MBI）薄膜，其質子沿氫鏈鏈狀轉移所致之鐵電切換具有毫秒級動態與準一維網域增長，在約10^8次連續切換週期後殘餘極化僅顯示初始喚醒行為（前10^4週期增加約10%）隨後穩定，顯示出優異的疲勞耐受性，提示MBI為無氟有機鐵電器件之耐久平台。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">無人類受試者；2-甲基苯並咪唑（MBI）鐵電薄膜材料</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">以低溫沉積後受限結晶（LDRC）法生長MBI薄膜於指間電極上，進行約10^8次連續完全極化反轉之切換耐久性測試</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同切換週期數下之殘餘極化變化；KAI模型分析之切換動態與網域增長機制</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42996521/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#13</span>
+            <span class="emoji-icon">🧪</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>p-區殼醇酸鹽：混合分子鐵電體之百年老平台</h3>
+          <p class="journal-source">Angewandte Chemie (International ed. in English) · p-Block Catecholates: A Century-Old Platform for Hybrid Molecular Ferroelectrics.</p>
+          <p>本研究首次探討p-區殼醇酸錯合物作為分子鐵電體之潛力，合成一系列鍺殼醇酸鹽並評估反離子大小對晶體對稱與極性排列之影響；單晶X-ray繞射顯示由中心對稱至極性堆積之轉變，二次諧波生成確認[Et4N][Cl-Ge(cat)2]於290 K具有非中心對稱特性，介電光譜、電容-電壓測量與雙波電測量支持薄膜中可切換極化，壓電反應力顯微鏡觀察到特徵振幅蝴蝶迴路與相位滯後迴路，進一步證實可逆壓電切換，確立p-區殼醇酸錯合物為可由反離子控制之混合分子鐵電可程式化平台。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">無人類受試者；p-區殼醇酸錯合物（鍺殼醇酸鹽）分子材料</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">合成不同反離子大小之[乙四銨][Cl-Ge(cat)2]等系列鹽類，並製備薄膜進行鐵電特性評估</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同反離子大小對晶體對稱、極性堆積與鐵電切換行為之影響；壓電反應力顯微鏡之振幅蝴蝶迴路與相位滯後迴路驗證</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42995400/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#14</span>
+            <span class="emoji-icon">🧪</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>乙酰吡啶基光開關經由Zincke亞胺中間體之合成</h3>
+          <p class="journal-source">Chemical science · Synthesis of azopyridine-based photoswitches via Zincke imine intermediates.</p>
+          <p>本研究報告利用重氮鹽與Zincke亞胺中間體直接親電偶合合成取代乙酰吡啶光開關之溫和兩步法，方法耐受廣泛取代基並首次提供3-乙酰吡啶環上C2、C3、C4及C5位置之完整位置異構體集，並可實現15N標記；UV-vis與DFT/TD-DFT顯示相對於偶氮苯之紅移且結構可調之π→π*吸收，光異構化實現雙向切換且轉換率超過80%，熱Z-異構體半衰期從數小時至數週不等，確立Zincke亞胺化學作為乙酰吡啶合成之通用平台。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">無人類受試者；乙酰吡啶基光開關分子</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">以重氮鹽直接親電偶合至Zincke亞胺中間體，合成取代乙酰吡啶光開關；以實驗設計/反應面法優化反應條件</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同取代基與位置異構體之光物理性質與光異構化性能比較；與偶氮苯之光譜行為比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42997628/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#15</span>
+            <span class="emoji-icon">🔍</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>雙向相位敏感性全息光導瞬態顯微鏡</h3>
+          <p class="journal-source">ACS photonics · Bidirectional Phase Sensitivity in Holographic Phototransient Microscopy.</p>
+          <p>本研究開發一台可在前向散射（FWS）與後向散射（BWS）幾何間切換的雙向飛秒中紅外泵浦-探針全息顯微鏡，並引入內部前向散射（IFS）成像模態：利用中紅外透明樣本基材頂表面產生之背反射作為內部產生的前向散射照射波，經時間相干門控與直接後向散射場分離。結果顯示IFS在保持BWS單側可及性與機械簡潔性的同時，可重現真實FWS之信號幅度與時間動態，成為生物或含溶劑標本單側成像之實用定量替代方案。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">無人類受試者；聚苯乙烯微珠於CaF2基材上，置於空氣、水與折射率匹配甘油-水混合液中</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">雙向飛秒中紅外泵浦-探針全息顯微鏡，在FWS與BWS幾何間切換；引入內部前向散射（IFS）模態以基材頂表面背反射作為內部照射波</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">IFS與真實FWS之信號幅度及時間動態比較；IFS與傳統BWS之單側可及性與機械複雜度比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42997715/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#16</span>
+            <span class="emoji-icon">👁️</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>非傳染性葡萄膜炎參考生物製劑與類生物製劑切換之效果與安全性結果：系統性回顧與螢幕分析</h3>
+          <p class="journal-source">Clinical ophthalmology (Auckland, N.Z.) · Effectiveness and Safety Outcomes After Switching from Reference Biologics to Biosimilars for Treatment of Non-Infectious Uveitis: A Systematic Review and Meta-Analysis.</p>
+          <p>系統性回顧與螢幕分析11篇研究（343名非傳染性葡萄膜炎患者）顯示，從參考生物製劑切換至類生物製劑之復發風險相對危險度為0.98（95% CI: 0.55-1.72），最終logMAR視力兩組相當（平均差異-0.0116；95% CI: -0.0983至0.0751），安全性結果中眼部、輕微系統性與重大系統性不良事件風險比亦無顯著差異；然而大多數研究偏傾風險嚴重，整體證據品質為低，目前證據不足以支持兩者在效果與安全性上有有意義差異。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">任何年齡之非傳染性葡萄膜炎（NIU）患者，共11篇研究、343名患者</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">從參考生物製劑切換至其類生物製劑</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">類生物製劑組 vs 參考生物製劑組（劃痕前後設計或前瞻性比較）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42999825/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#17</span>
+            <span class="emoji-icon">💉</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>乾癬患者抗IL-17失效後切換至Tildrakizumab 200 mg之52週前瞻性真實世界研究</h3>
+          <p class="journal-source">Dermatology and therapy · Switching to Tildrakizumab 200 mg after Anti-IL-17 Failure in Moderate-to-Severe Psoriasis: A 52-Week Prospective Real-World Study.</p>
+          <p>前瞻性真實世界研究納入30名抗IL-17失效之中重度斑塊狀乾癬患者，切換至Tildrakizumab並追蹤52週，結果顯示PASI分數由基線12.2顯著下降至第52週1.1，88.9%達成PASI75、66.7%達成PASI90、50%達成PASI100，且94.4%達PASI≤3；皮膚生活品質指數、WHO-5幸福感指數與藥物治療滿意度問卷亦顯著改善，雖46.7%患者初始使用100 mg後皆升劑至200 mg，但無對照組維持低劑量，故無法比較兩種劑量之相對效果。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">30名單一IL-17抑制劑治療失效之中重度斑塊狀乾癬患者</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">切換至Tildrakizumab（初始100 mg，隨診期間多數升劑至200 mg），追蹤52週</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">基線vs第4、16、52週之臨床結果變化；無維持100 mg之對照組</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42999962/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#18</span>
+            <span class="emoji-icon">🫁</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>關於「氣流與肺容積反應於三重治療裝置切換之分離」編者信之回覆</h3>
+          <p class="journal-source">The American journal of the medical sciences · Reply to: "Letter to the Editor: Dissociation between Airflow and Lung Volume Responses following Triple Therapy Device Switching in Asthma-COPD Overlap".</p>
+          <p>此篇為回覆編者信，原始文獻摘要為空，內容為氣喘-COPD重疊症患者於三重治療裝置切換後氣流與肺容積反應之分離現象的學術討論，屬呼吸內科領域，與解離性身份障礙無關。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">氣喘-COPD重疊症患者（具體樣本資訊因回覆性質未詳述）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">三重治療裝置切換（具體藥物與裝置因回覆性質未詳述）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">裝置切換前後之氣流與肺容積反應比較（回覆性質，數據有限）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/42998834/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#19</span>
+            <span class="emoji-icon">📭</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>DID相關論文篩選：今日無其他直接相關精神醫學文獻</h3>
+          <p class="journal-source">N/A · No additional DID/dissociation-related psychiatry papers identified in today's PubMed fetch.</p>
+          <p>今日抓取之19篇文獻中，除上述兩篇間接相關之睡眠與虛擬實境研究外，餘多為皮膚科、眼科、內分泌、材料科學、病毒學及呼吸內科等非精神醫學領域，DID/解離症相關臨床研究資源仍顯稀缺。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">N/A</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">N/A</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">N/A</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+            <div class="topic-row">
+              <span class="topic-name">解離症</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">失真實感</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">評估診斷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">成人精神醫學</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">心理治療</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:50%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">創傷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:50%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">生物標記</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:50%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">虛擬實境</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:50%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">睡眠</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:50%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">案例報告</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:50%"></div></div>
+              <span class="topic-count">1</span>
+            </div></div>
+
+  <div class="keywords-section section"><div class="section-title"><span class="section-icon">🏷️</span>關鍵字</div><div class="keywords"><span class="keyword">DID</span><span class="keyword">解離症</span><span class="keyword">失真實感</span><span class="keyword">失自我感</span><span class="keyword">創傷</span><span class="keyword">心理治療</span><span class="keyword">評估診斷</span><span class="keyword">虛擬實境</span><span class="keyword">睡眠</span><span class="keyword">生物標記</span></div></div>
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：nvidia/nemotron-3.5-super-vl-120b-a12b</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
