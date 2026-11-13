@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年11月13日</title>
+<meta name="description" content="2026年11月13日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年11月13日</span>
+        <span class="badge badge-count">📊 35 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日文獻整體呈現雜項性，僅極少數與解離症直接相關。臨床價值較高的論文集中於創傷相關情感麻木與解離關聯、精神分析解離理論，以及解離性障礙與邊界人格障礙的共病性討論。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">🧠</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>創傷曝露、解離與失感情性：以解釋性提升機器預測情感麻木之研究</h3>
+          <p class="journal-source">Journal of Assessment and Research in Applied Counseling · Explainable Boosting Machine Prediction of Emotional Numbness from Trauma Exposure, Dissociation, and Alexithymia</p>
+          <p>本研究發現解離是創傷後成人情感麻木的最強預測因子，強調解離症狀在創傷照護中的評估與干預重要性。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">加拿大426名創傷曝露成人</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">以創傷曝露、解離經驗、失憶症（alexithymia）作為預測變數</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">傳統多元線性迴歸模型</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">情感麻木（emotional numbness）預測表現，EBM模型解釋變異數56%，優於線性迴歸的44%</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">創傷</span><span class="tag">解離症</span><span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://www.semanticscholar.org/paper/42b4403809afd516f953829aec22d524f1432102" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#2</span>
+            <span class="emoji-icon">🧵</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>無法象徵化創傷如何導致解離與重複強迫：精神分析與神經生物學整合模型</h3>
+          <p class="journal-source">International Journal of Research and Innovation in Social Science · How a Failure to Symbolise Trauma Produces Dissociation and Repetition Compulsion: Toward an Integrated Psychoanalytic-Neurobiological Model of Psychic Trauma</p>
+          <p>本文整合傑南、佛洛依德、賴伊與結構性解離理論，提出創傷無法象徵化會導致身體化解離與重複強迫，為理解複雜創傷與解離性障礙提供理論架構。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">心理創傷與解離症相關文獻與理論模型</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">精神分析-神經生物學整合理論（二重解離模型）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">傳統精神分析與神經科學分立文獻</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">提出主要象徵化失敗導致身體化解離與解離性失憶，次要象徵化失敗導致重複強迫的理論框架</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">創傷</span><span class="tag">解離症</span><span class="tag">心理治療</span><span class="tag">神經生物學</span><span class="tag">依附創傷</span><span class="tag">身體化解離</span>
+            <a href="https://www.semanticscholar.org/paper/b2cb8bd9b161158961929946b0f8f26ff106d067" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#3</span>
+            <span class="emoji-icon">🎬</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>分裂電影中創傷、解離與電影放大：基於赫爾曼框架的分析</h3>
+          <p class="journal-source">Indonesian EFL Journal · TRAUMA, DISSOCIATION, AND CINEMATIC AMPLIFICATION IN SPLIT: A HERMAN-INFORFORMED ANALYSIS OF KEVIN WENDELL CRUMB</p>
+          <p>分析電影《分裂》中主角的創傷與解離表現，區分臨床可辨性與電影放大，提醒臨床人員勿將虛構行為視為診斷依據。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">電影《分裂》主角凱溫·溫德爾·克魯布（Kevin Wendell Crumb）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">赫爾曼創傷框架（過度警覺、侵入性、受限）之主題分析</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">臨床創傷理論與電影敘事慣例</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">兒童期身體虐待為主要敘事解釋，指出解離與防禦反應在驚悚片中的電影放大效應</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">創傷</span><span class="tag">案例報告</span><span class="tag">成人精神醫學</span>
+            <a href="https://www.semanticscholar.org/paper/6f63872acb07c8ae501a0b49186f010427cb96c" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#4</span>
+            <span class="emoji-icon">📊</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>歇斯底里類障礙共病的元分析：邊界人格障礙是否為核心樞紐？</h3>
+          <p class="journal-source">Personality and mental health · Meta-Analysis of Comorbidities Among Hysteriform Disorders: Is Borderline Personality Disorder a 'Hysterical Disorder'?</p>
+          <p>元分析顯示邊界人格障礙與解離性障礙及身體症狀障礙具強烈雙向共病，建議未來分類系統可考慮將這些歇斯底里相關疾患歸為一體。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">包含轉化症、身體症狀障礙、解離性障礙、失自我感/失真實感障礙、表演型人格障礙與邊界人格障礙的69項研究</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">診斷重疊與共病率分析（依診斷標準與發表年份進行亞組分析與元迴歸）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">歇斯底里類障礙之間的共病關聯</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">邊界人格障礙顯示與解離性障礙及身體症狀障礙有強烈雙向關聯，作為核心診斷樞紐；異質性高，但敏感性分析後降低</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">邊界人格障礙</span><span class="tag">轉化症</span><span class="tag">身體化解離</span><span class="tag">評估診斷</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43016046/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#5</span>
+            <span class="emoji-icon">🧘</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>正念接納承諾訓練對精英跆拳道運動員焦慮與認知靈活性的影響：隨機對照試驗</h3>
+          <p class="journal-source">Acta psychologica · Effects and mechanisms of mindfulness acceptance commitment training on anxiety and cognitive flexibility in elite taekwondo athletes: A randomized controlled trial</p>
+          <p>正念接納承諾訓練可減少精英運動員的競賽焦慮並提升認知靈活性，其中減少任務切換成本效應最大，提示正念類介入可能有助於改善與解離相關的認知轉移困難。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">80名精英跆拳道運動員（MAC組40人，心理技能訓練組40人）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">8週正念-接納-承諾訓練（MAC）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">主動控制組（心理技能訓練，PST）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">競賽焦慮、自信心、認知靈活性及任務切換成本（switch cost）改善；正念增加與經驗迴避減少部分中介這些變化</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">心理治療</span><span class="tag">DBT</span><span class="tag">認知靈活性</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43013947/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#6</span>
+            <span class="emoji-icon">🧪</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>電腦化軌跡測驗在PEBL平台的開源實施：任務結構保留與紙筆版協議有限</h3>
+          <p class="journal-source">Applied neuropsychology. Adult · The open-source computerized Trail Making Test in PEBL: Preserved task structure, practice effects, and limited agreement with paper-based testing</p>
+          <p>電腦化軌跡測驗保留了預期的任務難度層次與練習效應，但與紙筆版協議有限，分數不應互換使用，提示神經心理評估需注意格式差異。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">37名巴西成人</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">PEBL平台電腦化軌跡測驗（數字排序、數字字母交替、字母排序）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">紙筆版軌跡測驗（TMT-A與TMT-B）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">完成時間隨施測次數顯著下降；任務難度層次穩定；但PEBL與紙筆版完成時間內部一致性有限，白考版時間較長且寬限界寬廣</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span><span class="tag">神經影像</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43015034/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#7</span>
+            <span class="emoji-icon">🧠</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>記憶腦態參與與健康老化：處理速度與空間參考框架切換的認知成本</h3>
+          <p class="journal-source">Neurobiology of aging · Healthy aging, processing speed, and mnemonic brain state engagement</p>
+          <p>研究發現老年人在時間壓力下難以切換記憶編碼與提取腦態，可能與創傷後解離症狀中的認知轉移困難有機制上的相似性。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">年輕成人與健康老年成人</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">在腦電圖（EEG）記錄下進行變動刺激持續時間的物體編碼與提取任務</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">年齡組間的記憶腦態招募與切換成本</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">老年人在時間限制下難以啟動與維持目標相關的記憶腦態，需要更長處理時間以切換出無關的提取狀態</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">認知靈活性</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43013934/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#8</span>
+            <span class="emoji-icon">🗺️</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>空間參考框架切換產生獨立的認知處理成本</h3>
+          <p class="journal-source">Brain research · Switching to an allocentric spatial reference frame incurs distinct cognitive processing costs</p>
+          <p>從自我中心切換到地圖中心的空間參考框架會顯著延長反應時間，提示參考框架切換的認知成本可能與解離性身份轉換中的認知轉移有相似之處。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">參與空間記憶切換任務的健康成人</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">虛擬社區導航後的自我中心與地圖中心空間記憶任務</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">重複相同參考框架 vs. 試次間切換參考框架</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">切換試次反應時間顯著較慢，尤其為自我中心轉地圖中心切換；準確度無顯著差異</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">認知靈活性</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43014497/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">📚</span>其他值得關注的文獻</div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📊</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>轉化症與解離性障礙共病的元分析：邊界人格障礙作為核心樞紐</h3>
+          <p class="journal-source">Personality and mental health</p>
+          <p>元分析顯示邊界人格障礙與解離性障礙及身體症狀障礙具強烈雙向共病，建議未來分類系統可考慮將這些歇斯底里相關疾患歸為一體。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">邊界人格障礙</span><span class="tag">轉化症</span><span class="tag">身體化解離</span><span class="tag">評估診斷</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43016046/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-high utility-sm">高</span>
+          </div>
+          <h3>創傷曝露、解離與失感情性：以解釋性提升機器預測情感麻木之研究</h3>
+          <p class="journal-source">Journal of Assessment and Research in Applied Counseling</p>
+          <p>本研究發現解離是創傷後成人情感麻木的最強預測因子，強調解離症狀在創傷照護中的評估與干預重要性。</p>
+          <div class="card-footer">
+            <span class="tag">創傷</span><span class="tag">解離症</span><span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://www.semanticscholar.org/paper/42b4403809afd516f953829aec22d524f1432102" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧵</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>無法象徵化創傷如何導致解離與重複強迫：精神分析與神經生物學整合模型</h3>
+          <p class="journal-source">International Journal of Research and Innovation in Social Science</p>
+          <p>本文整合傑南、佛洛依德、賴伊與結構性解離理論，提出創傷無法象徵化會導致身體化解離與重複強迫，為理解複雜創傷與解離性障礙提供理論架構。</p>
+          <div class="card-footer">
+            <span class="tag">創傷</span><span class="tag">解離症</span><span class="tag">心理治療</span><span class="tag">神經生物學</span><span class="tag">依附創傷</span><span class="tag">身體化解離</span>
+            <a href="https://www.semanticscholar.org/paper/b2cb8bd9b161158961929946b0f8f26ff106d067" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🎬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>分裂電影中創傷、解離與電影放大：基於赫爾曼框架的分析</h3>
+          <p class="journal-source">Indonesian EFL Journal</p>
+          <p>分析電影《分裂》中主角的創傷與解離表現，區分臨床可辨性與電影放大，提醒臨床人員勿將虛構行為視為診斷依據。</p>
+          <div class="card-footer">
+            <span class="tag">解離症</span><span class="tag">創傷</span><span class="tag">案例報告</span><span class="tag">成人精神醫學</span>
+            <a href="https://www.semanticscholar.org/paper/6f63872acb07c8ae501a0b49186f010427cb96c" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧘</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>正念接納承諾訓練對精英跆拳道運動員焦慮與認知靈活性的影響：隨機對照試驗</h3>
+          <p class="journal-source">Acta psychologica</p>
+          <p>正念接納承諾訓練可減少精英運動員的競賽焦慮並提升認知靈活性，其中減少任務切換成本效應最大，提示正念類介入可能有助於改善與解離相關的認知轉移困難。</p>
+          <div class="card-footer">
+            <span class="tag">心理治療</span><span class="tag">DBT</span><span class="tag">認知靈活性</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43013947/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧪</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>電腦化軌跡測驗在PEBL平台的開源實施：任務結構保留與紙筆版協議有限</h3>
+          <p class="journal-source">Applied neuropsychology. Adult</p>
+          <p>電腦化軌跡測驗保留了預期的任務難度層次與練習效應，但與紙筆版協議有限，分數不應互換使用，提示神經心理評估需注意格式差異。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span><span class="tag">神經影像</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43015034/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>記憶腦態參與與健康老化：處理速度與空間參考框架切換的認知成本</h3>
+          <p class="journal-source">Neurobiology of aging</p>
+          <p>研究發現老年人在時間壓力下難以切換記憶編碼與提取腦態，可能與創傷後解離症狀中的認知轉移困難有機制上的相似性。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">認知靈活性</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43013934/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🗺️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>空間參考框架切換產生獨立的認知處理成本</h3>
+          <p class="journal-source">Brain research</p>
+          <p>從自我中心切換到地圖中心的空間參考框架會顯著延長反應時間，提示參考框架切換的認知成本可能與解離性身份轉換中的認知轉移有相似之處。</p>
+          <div class="card-footer">
+            <span class="tag">認知靈活性</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43014497/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🚫</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>青少年對尼古丁電子煙相對於大麻電子煙與吸食大麻的危害感知及其與使用狀態的關聯</h3>
+          <p class="journal-source">Public health reports (Washington, D.C. : 1974)</p>
+          <p>青少年普遍認為尼古丁電子煙與大麻電子煙危害相當或較吸食大麻更危害，較低的危害感知與目前電子煙或大麻使用及未來使用易感性相關，預防策略應強化正確風險認知。</p>
+          <div class="card-footer">
+            <span class="tag">兒童青少年</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43018235/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🫀</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>血管平滑肌細胞中Yes相關蛋白刪除緩解動脈粥樣硬化</h3>
+          <p class="journal-source">Journal of the American Heart Association</p>
+          <p>血管平滑肌細胞YAP表達升高促進動脈粥樣硬化，透過TEAD4上調血管生成素-2導致表型轉換、遷移與增殖，抑制血管平滑肌YAP可能成為治療策略。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43018070/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📋</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>與慢性髓髓性白酪氨酸激酶抑制劑毒性相關的全面患者報告EORTC自訂問卷之開發、驗證與試點測試</h3>
+          <p class="journal-source">Supportive care in cancer : official journal of the Multinational Association of Supportive Care in Cancer</p>
+          <p>開發涵蓋50項症狀的EORTC自訂問卷，顯示良好至優秀的信度與反應性，可用於即時監測慢性髓髓性白血病患者的酪氨酸激酶抑制劑毒性。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43018785/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔄</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>健康老年成人任務切換的系統性回顧：範式操作與切換成本</h3>
+          <p class="journal-source">Psychological research</p>
+          <p>系統性回顧發現老年人任務切換速度較慢且準確度較低，但非顯著結果報告不足限制了結論，未來研究需更一致的報告標準。</p>
+          <div class="card-footer">
+            <span class="tag">認知靈活性</span><span class="tag">成人精神醫學</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43018775/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>黑色素瘤局部侵襲、遷移與侵襲表型轉換的非免疫微環境線索</h3>
+          <p class="journal-source">Cancer metastasis reviews</p>
+          <p>綜述黑色素瘤腫瘤微環境中非免疫成分（角質形成細胞、成纖維細胞、細胞外基質、脂肪細胞）如何透過生化、生物力學與代謝線索共同調節腫瘤運動性與局部侵襲。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43018774/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>RORα透過AMPK-mTOR訊號通路促進小膠細胞/巨噬細胞M2極化參與褪黑素介於腦缺血再灌注損傷中的神經保護</h3>
+          <p class="journal-source">Functional & integrative genomics</p>
+          <p>RORα調節小膠細胞/巨噬細胞M2極化，參與褪黑素在腦缺血再灌注損傷中的神經保護作用，透過AMPK-mTOR訊號通路發揮抗發炎與神經保護效應。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43018655/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🐀</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>合成冬眠保護大鼠心臟免於缺血再灌注損傷</h3>
+          <p class="journal-source">eLife</p>
+          <p>透過化學遺傳學激活腦下視鏡中前區，誘導非自然冬眠物種大鼠進入合成冬眠狀態，使心肌梗死面積減少約40%，提示未來可轉化為中風或心臟病臨床應用。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43018643/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>PHBT及其肼誘導產物熒光行為的機制洞察：DFT/TD-DFT研究</h3>
+          <p class="journal-source">The journal of physical chemistry. A</p>
+          <p>計算化學研究揭示PHBT熒光淬滅源於供體型光誘導電子轉移與扭轉內分子電荷轉移的協同機制，為肼探針設計提供電子與質子過程見解。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43018366/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧪</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>離子環烷烴的結構多樣性、組裝、切換與新應用</h3>
+          <p class="journal-source">Chemical communications (Cambridge, England)</p>
+          <p>綜述離子環烷烴從雙吡啶離子箱到當代雜環架構的演進，強調電子貧陽離子π共軛壁、連接幾何與空腔尺寸如何控制分子識別與多態氧化還原切換。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43018286/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🤖</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>開放多代理系統在致動器攻擊下的追蹤共識：具有利普希茨非線性的研究</h3>
+          <p class="journal-source">IEEE transactions on cybernetics</p>
+          <p>提出觀測器基礎彈性控制器與動態補償器，在有界與無界致動器攻擊下達成追蹤共識，並透過新增邊界方法解決追隨者數量變化導致的錯誤系統維度不匹配問題。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43019286/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🌱</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>蛋白質類- Nitella雜合材料的界面耦合與電化學拮抗</h3>
+          <p class="journal-source">ACS applied bio materials</p>
+          <p>建構熱蛋白質類與石鳖子藻活細胞的雜合系統，發現蛋白質類載於活網絡而非新增可辨傳輸路徑，兩材料皆顯示遲滯切換，但僅石鳖子達到穩定電荷比。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43019475/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧲</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>La0.7Sr0.3Mn1-xRuxO3基合成反鐵磁體的深度解析磁化反轉</h3>
+          <p class="journal-source">ACS applied materials & interfaces</p>
+          <p>結合極化中子反射率等方法揭示氧化物合成反鐵磁體中非線性磁組態與反轉機制，建立磁各向異性、層間交換作用與反轉動力學之間的密切關聯。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43019445/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💡</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>器官類類癰腫瘤中HfLaO/InGaCdO具閘極控制雙塑性的高效能電晶體</h3>
+          <p class="journal-source">Materials horizons</p>
+          <p>開發具陡亞臨界擺幅與極高開關比的光電突觸電晶體，透過閘極偏壓在固定光激發下實現短期與長期塑性間的可逆切換，支援低功耗多模態神經形態運算。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43016364/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>UNC13A剪接修正拯救TDP-43缺失導致的突觸功能障礙</h3>
+          <p class="journal-source">Nature</p>
+          <p>TDP-43核心耗竭導致神經元結構完整但突觸傳遞顯著崩潰，透過反義核苷酸修正UNC13A單一隱性剪接事件即可恢復突觸囊泡釋放與網路同步，為約97%肌萎縮側索硬化症患者提供機制明確的治療策略。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43015463/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>鼠腦中慢時間尺度多巴胺釋放調節管理動機驅動在數天內的恢復</h3>
+          <p class="journal-source">Neuron</p>
+          <p>透過腦內熒光壽命成像發現，腹側腹側視前區的多巴胺傳輸在交配後下降並隨數日逐漸恢復，神經元發火率與神經遞質組成的變化分別控制動機動力學的早期與晚期階段。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43014309/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">☢️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>鼻咽癌質子弧治療能量層預選的非監督式深度學習模型</h3>
+          <p class="journal-source">Physics in medicine and biology</p>
+          <p>提出以點數表徵與U-Net模型進行質子弧治療能量層快速預選，縮短切換時間並提高靶區一致性，但部份危及器官平均劑量較高。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43013977/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧲</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>雙極化旋流協同效應實現次奈米與能源效率的無場切換</h3>
+          <p class="journal-source">ACS applied materials & interfaces</p>
+          <p>透過抗鐵磁/非磁性界面產生的y與z極化旋流協同，實現300奈米晶圓上90奈米垂直磁隧道接點的次奈米無場切換，轉換能量低至0.35 pJ/bit，為SOT-MRAM商業化鋪路。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43013855/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🪟</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>D-A-D工程電致變色配位金屬聚合物用於智慧窗、儲能與穿戴式裝置</h3>
+          <p class="journal-source">ACS applied materials & interfaces</p>
+          <p>引入苯並噻二唑受體構建供體-受體-供體架構，提升近紅外電致變色與電容性能，實現大光學對比與快速切換，並維持100次彎曲後的穩定性能。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43017863/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🦗</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>家蟋蟀在新穎飼料上的生長由繁殖歷史而非飲食適應驅動</h3>
+          <p class="journal-source">Journal of insect science (Online)</p>
+          <p>飼養試驗顯示家蟋蟀生長主要由系別身份與體型選擇決定，而非飲食適應，切換新穎飼料無檢測到生長成本，提示生理可塑性而非飲食適應。</p>
+          <div class="card-footer">
+            <span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43017929/" target="_blank">PubMed →</a>
+          </div>
+        </div></div>
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+            <div class="topic-row">
+              <span class="topic-name">解離症</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:50%"></div></div>
+              <span class="topic-count">4</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">創傷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:38%"></div></div>
+              <span class="topic-count">3</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">評估診斷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">心理治療</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:25%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">神經生物學</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:75%"></div></div>
+              <span class="topic-count">6</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">生物標記</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">8</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">認知靈活性</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:38%"></div></div>
+              <span class="topic-count">3</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">成人精神醫學</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:88%"></div></div>
+              <span class="topic-count">7</span>
+            </div></div>
+
+  <div class="keywords-section section"><div class="section-title"><span class="section-icon">🏷️</span>關鍵字</div><div class="keywords"><span class="keyword">解離症</span><span class="keyword">創傷</span><span class="keyword">情感麻木</span><span class="keyword">失憶症</span><span class="keyword">評估診斷</span><span class="keyword">神經生物學</span></div></div>
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：nvidia/nemotron-3.5-super-vl-120b-a12b</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
