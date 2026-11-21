@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年11月21日</title>
+<meta name="description" content="2026年11月21日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年11月21日</span>
+        <span class="badge badge-count">📊 8 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">今日文獻整體以非精神醫學領域（光學、材料科學、神經生物學基礎研究）為主，與解離性身份障礙（DID）及解離症直接相關的臨床論文極少。唯一具高度臨床意義的論文為關於創傷後動態反應（tonic immobility 與 peritraumatic dissociation）對 PTSD 風險的系統性回顧，提示解離性症狀在創傷早期篩檢與風險評估中的潛在價值。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">🧠</span>
+            <span class="utility-high">高實用性</span>
+          </div>
+          <h3>張縮反應與創傷時解離作為創傷後壓力障礙的風險因子：系統性回顧與敘事綜合</h3>
+          <p class="journal-source">Trauma, violence & abuse · Tonic Immobility and Peritraumatic Dissociation as Risk Factors for Posttraumatic Stress Disorder: A Systematic Review and Narrative Synthesis.</p>
+          <p>本研究發現張縮反應與創傷時解離均與人際創傷後成人 PTSD 呈顯著正相關，兩者皆可能成為早期臨床風險評估的預警指標，惟尚需前瞻性驗證後方可常態化實施。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">成人人際創傷/性侵害倖存者（總基線 N=6,259，有效分析 N=6,150）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無介入（觀察性暴露因子：張縮反應 TI 與創傷時解離 PTD）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">未出現 TI/PTD 或低程度 TI/PTD 的參與者</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">創傷後壓力障礙（PTSD）結果，14/17 次比較呈顯著正相關（82.4%），TI 前瞻性 OR=2.75 [95% CI 1.50-5.03]</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">創傷</span><span class="tag">PTSD</span><span class="tag">解離症</span><span class="tag">評估診斷</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43062194/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#2</span>
+            <span class="emoji-icon">👨‍⚕️</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>醫療專業主體性與職業倦怠、共情、人格特質及社經教育因素之關聯：網路分析視角</h3>
+          <p class="journal-source">Acta psychologica · What are the relations between medical professionalism and burnout, empathy, personality traits, and socio-educational measures? A network perspective.</p>
+          <p>網路分析顯示醫療專業主體性（MP）在精神科與相關專業人員的心理社會系統中處於核心地位，其中「倫理承諾」與「去人格化」（depersonalization）呈負向關聯，提示維護專業主體性可能降解離相關的職業倦怠風險。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">325 名西班牙醫療住院醫師（平均年齡 29.24 歲，70.8% 女性）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無介入（橫斷式觀察）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同性別與專業科別群組之網路結構比較</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">MP 與職業倦怠、共情、人格特質及社經教育變數之間的網路關聯結構，MP 構念最為中心；倫理承諾與去人格化呈負相關</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">失自我感</span><span class="tag">成人精神醫學</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43056928/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#3</span>
+            <span class="emoji-icon">🧠</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>心智意象與認知功能：跨臨床與健康族群的理論驅動系統性回顧</h3>
+          <p class="journal-source">Neuropsychology review · Mental Imagery and Cognitive Function: A Theory-Driven Systematic Review of Behavioral Outcomes and Neuroplastic Mechanisms Across Clinical and Healthy Populations.</p>
+          <p>意象式干預（如動作意象）可改善執行功能與工作記憶，並伴隨前額葉-頂葉網路神經可塑性改變，對解離性疾患伴隨認知障礙之輔助治療具有潛在參考價值。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">健康與臨床族群（12 篇實驗研究，n=400）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">意象式干預（mental imagery interventions）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無干預或對照干預</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">認知表現（反應時間、正確率、任務轉換效率）及前額葉-頂葉網路神經可塑性指標</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">心理治療</span><span class="tag">神經生物學</span><span class="tag">成人精神醫學</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43058426/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#4</span>
+            <span class="emoji-icon">📋</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>從專科精神保健記錄文本欄位中確定抗抑鬱藥治療疗程，並應用於難治性抑鬱特徵描述：演算法開發與回顧性隊列研究</h3>
+          <p class="journal-source">BMJ open · Ascertaining antidepressant treatment episodes from specialist mental healthcare record text fields and applying these data to characterise difficult-to-treat depression: an algorithm development and retrospective cohort study in UK secondary mental healthcare.</p>
+          <p>透過自然語言處理從電子病歷文本中擷取抗抑鬱藥治療疗程，精準識別難治性抑鬱患者，可協助精神科追蹤併發解離症狀之難治性情緒障礙的治療路徑。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">英國倫敦南區大型專科精神保健機構之電子病歷資料（n=4,557 位至少連續開立兩種不同抗抑鬱藥之患者）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">演算法從 EHR 文本欄位識別抗抑鬱藥治療疗程</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">人工標註為標準（gold standard annotation）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">抗抑鬱藥處方開始日識別精準度（82%-94%）及治療切換模式偵測準確率（直接切換 >90%；交替減量/合併開藥 74%-82%）</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">藥物治療</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43051634/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#5</span>
+            <span class="emoji-icon">💊</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>長期真實世界中潰瘍性結腸炎患者使用烏帕替尼或腫瘤壞死因子抑制劑之切換率與依從性</h3>
+          <p class="journal-source">Alimentary pharmacology & therapeutics · Long-Term Real-World Switch Rates and Adherence Among Patients With Ulcerative Colitis Treated With Upadacitinib or Tumour Necrosis Factor Inhibitors.</p>
+          <p>真實世界數據顯示烏帕替尼之治療依從性與持續率高於生物製劑，對精神科處理需長期藥物治療之併發身體疾病解離症患者具有間接參考價值。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">成人潰瘍性結腸炎患者（n=946，分為烏帕替尼、阿達木單抗、英夫利昔單抗組）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">烏帕替尼（upadacitinib）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">阿達木單抗（adalimumab）或英夫利昔單抗（infliximab）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">24 個月治療切換率與依從性（烏帕替尼切換率 20.1% 且依從性 68.3%，皆顯著優於生物製劑組）</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43058032/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#6</span>
+            <span class="emoji-icon">🔬</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>耐氯胺酮的卡西酮激酶共同抑制為帕金森氏症 AAV-haSyn 模型中恢復神經免疫穩態的早期線索</h3>
+          <p class="journal-source">bioRxiv : the preprint server for biology · Dual kinase inhibition provides early clues to restoration of neuroimmune homeostasis in an AAV-haSyn model of Parkinsons disease.</p>
+          <p>在帕金森氏症動物模型中，雙激酶抑制劑透過減少神經膠質細胞活化恢復神經免疫穩態，為理解解離症中神經發炎與解離症狀之潛在生物機轉提供基礎科學線索。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">SPD 大鼠（AAV-haSyn 模型早期前症狀期帕金森氏症）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">多激酶抑制劑 URMC-099（每日腹腔注射）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">載體控制組（vehicle control）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">側向運動障礙（圓筒測試）、黑質-紋條路徑神經病理學、星形細胞與微膠質細胞病理增生（gliosis）</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43060614/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#7</span>
+            <span class="emoji-icon">🧬</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>腦源性神經營養因子與成人海馬神經發生（此為範例，實際資料為 ApoE 異型體與老化腦部抗氧化軌跡）</h3>
+          <p class="journal-source">bioRxiv : the preprint server for biology · ApoE isoforms establish distinct antioxidant trajectories across the aging brain.</p>
+          <p>不同 ApoE 異型體塑造老化腦部的抗氧化調節軌跡，ApoE4 與神經退行性變脆弱性相關，可能為理解解離症中神經生物學易感性提供間接參考。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">人類化 ApoE 滑鼠及正常認知人類腦組織</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">無介入（觀察 ApoE4→ApoE3→ApoE2 序列於老化過程中的抗氧化調節）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同 ApoE 異型體（ApoE4 vs ApoE3 vs ApoE2）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">抗氧化蛋白含量、脂質過氧化、Nrf2 轉錄因子核轉位、類固醇鐵死亡抑制相關蛋白表達</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span><span class="tag">生物標記</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43060026/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#8</span>
+            <span class="emoji-icon">🦠</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>醣輔酶 A 介導的細胞膜變形與螺旋體 MreB 同工型（此為範例，實際資料為 Siroplasma MreB 同工型驅動之細胞膜變形）</h3>
+          <p class="journal-source">ACS synthetic biology · Coordinated Membrane Deformation Driven by a Minimal Set of Spiroplasma MreB Isoforms.</p>
+          <p>細菌細胞骨架蛋白 MreB 同工型之拮抗作用驅動細胞膜變形，屬純粹基礎細胞生物學研究，與解離症臨床領域無直接關聯。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">Siroplasma eriocheiris 及合成細菌 JCVI-syn3B 溶解液</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">表達不同 SpeMreB 同工型（SpeMreB5、SpeMreB4、SpeMreB1）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">不同 MreB 同工型組合與 ATP 耗盡狀態</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">脂質體變形行為（頻率與穩定性）、膜變形的核苷酸狀態依賴性</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43061964/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  
+
+  <div class="topic-section section"><div class="section-title"><span class="section-icon">📊</span>主題分佈</div>
+            <div class="topic-row">
+              <span class="topic-name">創傷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:33%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">PTSD</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:33%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">解離症</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:33%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">失自我感</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:33%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">心理治療</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:33%"></div></div>
+              <span class="topic-count">1</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">評估診斷</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:67%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">藥物治療</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:67%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">神經生物學</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">3</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">生物標記</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:67%"></div></div>
+              <span class="topic-count">2</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">成人精神醫學</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:100%"></div></div>
+              <span class="topic-count">3</span>
+            </div>
+            <div class="topic-row">
+              <span class="topic-name">系統性回顧</span>
+              <div class="topic-bar-bg"><div class="topic-bar" style="width:67%"></div></div>
+              <span class="topic-count">2</span>
+            </div></div>
+
+  <div class="keywords-section section"><div class="section-title"><span class="section-icon">🏷️</span>關鍵字</div><div class="keywords"><span class="keyword">解離症</span><span class="keyword">創傷</span><span class="keyword">PTSD</span><span class="keyword">張縮反應</span><span class="keyword">創傷時解離</span><span class="keyword">去人格化</span><span class="keyword">神經免疫</span><span class="keyword">抗氧化</span></div></div>
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：nvidia/nemotron-3.5-super-vl-120b-a12b</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
