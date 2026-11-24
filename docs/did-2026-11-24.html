@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DID Brain · 解離性身份障礙文獻日報 · 2026年11月24日</title>
+<meta name="description" content="2026年11月24日 DID 解離性身份障礙文獻日報，由 AI 自動彙整 PubMed 最新論文"/>
+<style>
+  :root { --bg: #f6f1e8; --surface: #fffaf2; --line: #d8c5ab; --text: #2b2118; --muted: #766453; --accent: #8c4f2b; --accent-soft: #ead2bf; --card-bg: color-mix(in srgb, var(--surface) 92%, white); }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: radial-gradient(circle at top, #fff6ea 0, var(--bg) 55%, #ead8c6 100%); color: var(--text); font-family: "Noto Sans TC", "PingFang TC", "Helvetica Neue", Arial, sans-serif; min-height: 100vh; overflow-x: hidden; }
+  .container { position: relative; z-index: 1; max-width: 880px; margin: 0 auto; padding: 60px 32px 80px; }
+  header { display: flex; align-items: center; gap: 16px; margin-bottom: 52px; animation: fadeDown 0.6s ease both; }
+  .logo { width: 48px; height: 48px; border-radius: 14px; background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; box-shadow: 0 4px 20px rgba(140,79,43,0.25); }
+  .header-text h1 { font-size: 22px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .header-meta { display: flex; gap: 8px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; letter-spacing: 0.3px; }
+  .badge-date { background: var(--accent-soft); border: 1px solid var(--line); color: var(--accent); }
+  .badge-count { background: rgba(140,79,43,0.06); border: 1px solid var(--line); color: var(--muted); }
+  .badge-source { background: transparent; color: var(--muted); font-size: 11px; padding: 0 4px; }
+  .summary-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; margin-bottom: 32px; box-shadow: 0 20px 60px rgba(61,36,15,0.06); animation: fadeUp 0.5s ease 0.1s both; }
+  .summary-card h2 { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; color: var(--accent); margin-bottom: 16px; }
+  .summary-text { font-size: 15px; line-height: 1.8; color: var(--text); }
+  .section { margin-bottom: 36px; animation: fadeUp 0.5s ease both; }
+  .section-title { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+  .section-icon { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; background: var(--accent-soft); }
+  .news-card { background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; padding: 22px 26px; margin-bottom: 12px; box-shadow: 0 8px 30px rgba(61,36,15,0.04); transition: background 0.2s, border-color 0.2s, transform 0.2s; }
+  .news-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .news-card.featured { border-left: 3px solid var(--accent); }
+  .news-card.featured:hover { border-color: var(--accent); }
+  .card-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .rank-badge { background: var(--accent); color: #fff7f0; font-weight: 700; font-size: 12px; padding: 2px 8px; border-radius: 6px; }
+  .emoji-icon { font-size: 18px; }
+  .card-header-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+  .emoji-sm { font-size: 14px; }
+  .news-card h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; line-height: 1.5; }
+  .journal-source { font-size: 12px; color: var(--accent); margin-bottom: 8px; opacity: 0.8; }
+  .news-card p { font-size: 13.5px; line-height: 1.75; color: var(--muted); }
+  .card-footer { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tag { padding: 2px 9px; background: var(--accent-soft); border-radius: 999px; font-size: 11px; color: var(--accent); }
+  .news-card a { font-size: 12px; color: var(--accent); text-decoration: none; opacity: 0.7; margin-left: auto; }
+  .news-card a:hover { opacity: 1; }
+  .utility-high { color: #5a7a3a; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(90,122,58,0.1); border-radius: 4px; }
+  .utility-mid { color: #9f7a2e; font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(159,122,46,0.1); border-radius: 4px; }
+  .utility-low { color: var(--muted); font-size: 11px; font-weight: 600; padding: 2px 8px; background: rgba(118,100,83,0.08); border-radius: 4px; }
+  .utility-sm { font-size: 10px; }
+  .pico-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px; padding: 12px; background: rgba(255,253,249,0.8); border-radius: 14px; border: 1px solid var(--line); }
+  .pico-item { display: flex; gap: 8px; align-items: baseline; }
+  .pico-label { font-size: 10px; font-weight: 700; color: #fff7f0; background: var(--accent); padding: 2px 6px; border-radius: 4px; flex-shrink: 0; }
+  .pico-text { font-size: 12px; color: var(--muted); line-height: 1.4; }
+  .keywords-section { margin-bottom: 36px; }
+  .keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+  .keyword { padding: 5px 14px; background: var(--accent-soft); border: 1px solid var(--line); border-radius: 20px; font-size: 12px; color: var(--accent); cursor: default; transition: background 0.2s; }
+  .keyword:hover { background: rgba(140,79,43,0.18); }
+  .topic-section { margin-bottom: 36px; }
+  .topic-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .topic-name { font-size: 13px; color: var(--muted); width: 100px; flex-shrink: 0; text-align: right; }
+  .topic-bar-bg { flex: 1; height: 8px; background: var(--line); border-radius: 4px; overflow: hidden; }
+  .topic-bar { height: 100%; background: linear-gradient(90deg, var(--accent), #c47a4a); border-radius: 4px; transition: width 0.6s ease; }
+  .topic-count { font-size: 12px; color: var(--accent); width: 24px; }
+  .links-banner { margin-top: 48px; display: flex; flex-direction: column; gap: 12px; animation: fadeUp 0.5s ease 0.4s both; }
+  .link-card { display: flex; align-items: center; gap: 14px; padding: 18px 24px; background: var(--card-bg); border: 1px solid var(--line); border-radius: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; box-shadow: 0 8px 30px rgba(61,36,15,0.04); }
+  .link-card:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(61,36,15,0.08); }
+  .link-icon { font-size: 28px; flex-shrink: 0; }
+  .link-info { flex: 1; }
+  .link-name { font-size: 15px; font-weight: 700; color: var(--text); }
+  .link-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+  .link-arrow { font-size: 18px; color: var(--accent); font-weight: 700; }
+  footer { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--line); font-size: 11.5px; color: var(--muted); display: flex; justify-content: space-between; animation: fadeUp 0.5s ease 0.5s both; }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--accent); }
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 600px) { .container { padding: 36px 18px 60px; } .summary-card, .news-card { padding: 20px 18px; } .pico-grid { grid-template-columns: 1fr; } footer { flex-direction: column; gap: 6px; text-align: center; } .topic-name { width: 70px; font-size: 11px; } .links-banner { gap: 8px; } .link-card { padding: 14px 18px; } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo">🧠</div>
+    <div class="header-text">
+      <h1>DID Brain · 解離性身份障礙文獻日報</h1>
+      <div class="header-meta">
+        <span class="badge badge-date">📅 2026年11月24日</span>
+        <span class="badge badge-count">📊 37 篇文獻</span>
+        <span class="badge badge-source">Powered by PubMed + NVIDIA AI</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="summary-card">
+    <h2>📋 今日文獻趨勢</h2>
+    <p class="summary-text">本日PubMed抓取的23篇文獻中，與DID/解離症核心關聯度極低，主要為一般醫學、精神病學旁邊領域（如自殺、ASD、膝關節炎）與非醫學技術文獻。臨床價值高的精神醫學論文僅1篇，其餘多為雜項。整體趨勢顯示解離性身份障礙相關臨床研究在當日PubMed更新中極為稀缺。</p>
+  </div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">⭐</span>今日精選 TOP Picks</div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#1</span>
+            <span class="emoji-icon">⚠️</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>區分嘗試自殺者與僅有自殺念頭者的DSM-5症狀：以症狀層級機器學習模型為基礎的研究</h3>
+          <p class="journal-source">Archives of suicide research : official journal of the International Academy for Suicide Research · Identifying DSM-5 Symptoms That Differentiate Individuals Who Attempt Suicide From Those Experiencing Suicidal Ideation</p>
+          <p>透過彈性網路邏輯迴歸與交叉驗證，從665項DSM-5症狀中找出能區分過去12個月自殺未遂者與僅有自殺念頭者的關鍵症狀，發現解離性身份障礙與邊界型人格障礙等症狀為重要預測因子，模型AUC達0.84，提示症狀層級評估可提升自殺風險識別精準度。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">3,766名自我報告DSM-5症狀經驗之參與者，分為過去12個月自殺未遂組與僅有自殺念頭組</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">以665項DSM-5症狀為變數建立彈性網路邏輯迴歸模型（無實際臨床介入）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">自殺未遂組 vs. 僅有自殺念頭組（無自殺未遂）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">區分自殺未遂與自殺念頭的關鍵症狀；模型分類效能（AUC、靈敏度、特異度）</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">自傷自殺</span><span class="tag">解離症</span><span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070236/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#2</span>
+            <span class="emoji-icon">🧠</span>
+            <span class="utility-mid">中實用性</span>
+          </div>
+          <h3>全腦動態與第1級自閉症譜系障礙的認知靈活性：基於隱藏馬可夫模型的研究</h3>
+          <p class="journal-source">Journal of autism and developmental disorders · Whole-Brain Dynamics and Cognitive Flexibility in Level 1 ASD: An HMM-Based Approach</p>
+          <p>利用靜態功能性MRI與隱藏馬可夫模型分析腦網路動態，發現ASD兒童腦態切換率降低且額葉頂葉網路激活非對稱，這些變化與認知靈活性困難及重複行為嚴重度顯著相關，且結合行為與神經影像指標可達高診斷準確率（內部AUC 0.897，外部驗證AUC 0.869）。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">兒童自閉症譜系障礙第1級（n=69）與典型發展兒童（n=50）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">休息態功能性MRI掃描與行為評量（BRIEF認知靈活性量表）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">ASD組 vs. 典型發展組；內部資料集 vs. 獨立ABIDE II資料集驗證</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">腦態切換率、額葉頂葉網路激活模式；認知靈活性與重複行為嚴重度；診斷分類準確率（AUC）</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">神經影像</span><span class="tag">生物標記</span><span class="tag">兒童青少年</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43071312/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#3</span>
+            <span class="emoji-icon">💊</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>醫師與患者對血友病治療轉換認知差異的配對調查研究</h3>
+          <p class="journal-source">Haemophilia : the official journal of the World Federation of Hemophilia · A Paired-Analysis Survey of Differences in Physician and Patient Perceptions of Treatment Switching in Hemophilia</p>
+          <p>透過配對分析發現日本血友病患者與其主治醫師在治療轉換障礙認知上存在顯著差異，患者認為實際治療負擔（如藥物儲存）更重，且渴望更大程度參與治療決策，提示需透過共同決策彌合認知落差。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">113位醫師與49位血友病患者/照護者（日本）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">網路橫斷式調查，評估治療轉換障礙、疾病與治療負擔、決策參與感知</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">患者感知 vs. 其主治醫師感知（配對分析）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">治療轉換障礙項目的差異（如「不願改變」、「對當前治療滿意」）；疾病/治療負擔感知差異；理想與現實決策參與率</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43069660/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#4</span>
+            <span class="emoji-icon">💉</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>乙型肝炎病毒抗體組合療法第52週耐藥性分析：第2期研究</h3>
+          <p class="journal-source">The Journal of infectious diseases · Twice-Yearly Lenacapavir, Teropavimab, and Zinlirvimab for HIV-1: Week 52 Resistance Analyses From a Phase 2 Study</p>
+          <p>評估卡舍帕韋與兩種廣效中和抗體每半年一次皮下注射治療HIV-1的耐藥性，發現5.7%參與者出現耐藥分析標準，但切換回口服療法後病毒RNA皆能重新抑制，支持該組合療法持續開發。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">HIV-1病毒受抑制之參與者（N=80）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">每半年一次皮下注射卡舍帕韋927mg（含口服負荷劑量）+靜脈注射特羅帕維맙與津利維맙各2550mg</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">組合療法組 vs. 維持口服穩定基線療法組（2:1隨機）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">-</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43069510/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#5</span>
+            <span class="emoji-icon">🫀</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>從傳統腎素血管緊張素系統抑制劑轉至血管緊張素受體-內肽酶抑制劑對慢性腎臟病患者腎功能影響：回顧性探索性分析</h3>
+          <p class="journal-source">Clinical and experimental nephrology · Effects of switching from conventional renin-angiotensin system inhibitors to angiotensin receptor neprilysin inhibitor on renal function in patients with chronic kidney disease: a retrospective exploratory analysis</p>
+          <p>回顧分析107例慢性腎臟病患者從RAS抑制劑轉用ARNI後12個月的腎功能變化，結果顯示eGFR與尿蛋白/肌酸酐比值無顯著變化，但收縮壓與舒壓壓顯著下降，樣本量較小可能限制統計效力。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">107例慢性腎臟病患者</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">從傳統RAS抑制劑切換至血管緊張素受體-內肽酶抑制劑（ARNI）</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">切換前約6個月 vs. 切換後12個月（eGFR年變化率、尿蛋白/肌酸酐比值、血壓）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">eGFR年變化率（ΔeGFR）；尿蛋白/肌酸酐比值（UPCR）；血壓變化</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43071235/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#6</span>
+            <span class="emoji-icon">🦠</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>克隆氏病患者從烏司坦單抗轉至米利珠單抗的療效與安全性：VIVID-2擴展研究結果</h3>
+          <p class="journal-source">The American journal of gastroenterology · Efficacy and Safety of Mirikizumab After Switching From Ustekinumab in Crohn's Disease: Results From the VIVID-2 Extension Study</p>
+          <p>評估從烏司坦單抗內鏡非反應者轉用米利珠單抗治療中度至重度克隆氏病的結果，第52週內鏡反應率達41.4%-46.2%，內鏡緩解率22.0%-24.4%，安全性總體符合已知特徵。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">109例烏司坦單抗內鏡非反應者之克隆氏病患者（安全性組102例，療效組92例）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">靜脈注射米利珠單抗900mg（第0、4、8週），之後每4週皮下注射300mg</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照組（開放標籤擴展研究，以基線內鏡非反應狀態為背景）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">第52週內鏡反應與緩解率；CDAI緩解率；類固醇自由CDAI緩解率；炎症生物標記物；不良事件</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070883/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#7</span>
+            <span class="emoji-icon">🩺</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>自身免疫疾病患者中鈣調磷酸酶抑制劑疼痛綜合徵：雙刃劍</h3>
+          <p class="journal-source">Journal of human immunity · A Double-Edged Sword: Calcineurin Inhibitor Pain Syndrome in Patients with Autoimmune Diseases</p>
+          <p>報告兩例自身免疫疾病患者使用鈣調磷酸酶抑制劑（環孢素、他克莫司）後出現深層周邊骨骼疼痛，藥物停用後疼痛完全緩解，提醒臨床醫師注意此罕見但致痙的併發症。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">2例自身免疫疾病患者接受鈣調磷酸酶抑制劑治療（案例報告）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">環孢素或他克莫司治療</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">無對照（病例系列）</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">周邊深層骨骼疼痛出現；鈣調磷酸酶水準；停藥後疼痛緩解情形</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span><span class="tag">案例報告</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070570/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div>
+        <div class="news-card featured">
+          <div class="card-header">
+            <span class="rank-badge">#8</span>
+            <span class="emoji-icon">💉</span>
+            <span class="utility-low">低實用性</span>
+          </div>
+          <h3>轉至加拉達昔單抗治療遺傳性血管水腫患者的早期臨床經驗：長期預防新療法</h3>
+          <p class="journal-source">Journal of human immunity · Early Clinical Experience with Switching Hereditary Angioedema Patients to Garadacimab: A Novel Treatment for Long-Term Prophylaxis</p>
+          <p>審計13例遺傳性血管水腫患者轉用加拉達昔單抗（抗凝血因子XIIa單抗）後的早期臨床經驗，結果顯示除1例外皆達到疾病控制（AECT≥10），且多數患者幾乎無發作，顯示該療法具有長期預防潛力。</p>
+          
+            <div class="pico-grid">
+              <div class="pico-item"><span class="pico-label">P</span><span class="pico-text">13例遺傳性血管水腫患者（12例第1型；4位女性）</span></div>
+              <div class="pico-item"><span class="pico-label">I</span><span class="pico-text">從其他長期預防療法或「需用時」治療轉用加拉達昔單抗</span></div>
+              <div class="pico-item"><span class="pico-label">C</span><span class="pico-text">轉前三個月發作率 vs. 轉後三個月AECT評分</span></div>
+              <div class="pico-item"><span class="pico-label">O</span><span class="pico-text">三個月後血管水腫控制測驗（AECT）得分；發作頻率；患者滿意度</span></div>
+            </div>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070532/" target="_blank">閱讀原文 →</a>
+          </div>
+        </div></div>
+
+  <div class="section"><div class="section-title"><span class="section-icon">📚</span>其他值得關注的文獻</div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>血友病患者治療轉換之醫師與患者認知差異配對調查</h3>
+          <p class="journal-source">Haemophilia : the official journal of the World Federation of Hemophilia</p>
+          <p>透過配對分析發現日本血友病患者與其主治醫師在治療轉換障礙認知上存在顯著差異，患者認為實際治療負擔更重，且渴望更大程度參與治療決策。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43069660/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>乙型肝炎病毒抗體組合療法第52週耐藥性分析：第2期研究</h3>
+          <p class="journal-source">The Journal of infectious diseases</p>
+          <p>評估卡舍帕韋與兩種廣效中和抗體每半年一次皮下注射治療HIV-1的耐藥性，發現切換回口服療法後病毒RNA皆能重新抑制，支持該組合療法持續開發。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43069510/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🫀</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>從傳統腎素血管緊張素系統抑制劑轉至血管緊張素受體-內肽酶抑制劑對慢性腎臟病患者腎功能影響：回顧性探索性分析</h3>
+          <p class="journal-source">Clinical and experimental nephrology</p>
+          <p>回顧分析107例慢性腎臟病患者從RAS抑制劑轉用ARNI後12個月的腎功能變化，結果顯示eGFR與尿蛋白/肌酸酐比值無顯著變化，但血壓顯著下降。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43071235/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🦠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>克隆氏病患者從烏司坦單抗轉至米利珠單抗的療效與安全性：VIVID-2擴展研究結果</h3>
+          <p class="journal-source">The American journal of gastroenterology</p>
+          <p>評估從烏司坦單抗內鏡非反應者轉用米利珠單抗治療中度至重度克隆氏病的結果，第52週內鏡反應率達41.4%-46.2%，安全性總體符合已知特徵。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070883/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩺</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>自身免疫疾病患者中鈣調磷酸酶抑制劑疼痛綜合徵：雙刃劍</h3>
+          <p class="journal-source">Journal of human immunity</p>
+          <p>報告兩例自身免疫疾病患者使用鈣調磷酸酶抑制劑後出現深層周邊骨骼疼痛，藥物停用後疼痛完全緩解，提醒臨床醫師注意此罕見併發症。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span><span class="tag">案例報告</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070570/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>轉至加拉達昔單抗治療遺傳性血管水腫患者的早期臨床經驗：長期預防新療法</h3>
+          <p class="journal-source">Journal of human immunity</p>
+          <p>審計13例遺傳性血管水腫患者轉用加拉達昔單抗後的早期臨床經驗，結果顯示除1例外皆達到疾病控制，且多數患者幾乎無發作。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070532/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔧</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>程式化變形架構的皺褶編碼條帶學習設計</h3>
+          <p class="journal-source">Advanced materials (Deerfield Beach, Fla.)</p>
+          <p>透過有限元模擬與卷積神經網路代理模型，實現局部雙穩態皺褶編碼到全域形狀變形的反向設計，並構建可順序展開的人工花與穹頂狀變形殼，為軟體機器人與可展開結構提供新路徑。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070235/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🔥</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>非互惠熱超材料具有可程式化功能性</h3>
+          <p class="journal-source">Advanced science (Weinheim, Baden-Wurttemberg, Germany)</p>
+          <p>利用熱膨脹不匹配的雙層梁構建熱驅動「開-關」切換機制，實現無需相變材料或時空調變的方向性熱傳輸，並展示機械可重組熱編碼與熱閘電路邏輯功能。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43068985/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📷</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>閘極可調雙極性光反應之凡得華異接面用於體內感測時空視覺運算</h3>
+          <p class="journal-source">Advanced science (Weinheim, Baden-Wurttemberg, Germany)</p>
+          <p>報告一種Ti/Gr/WSe2/Gr凡得華異接面光二極體，透過閘極控制實現光電流正負極性可逆切換，具備202 mA W-1響應度與亞微秒反應時間，可執行單元級時空對比編碼。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43068974/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📄</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>多穩態折紙超材料用於可重複衝擊緩衝</h3>
+          <p class="journal-source">Advanced science (Weinheim, Baden-Wurttemberg, Germany)</p>
+          <p>提出以配置切換而非材料損傷來緩衝衝擊的輕量多穩態折紙超材料，透過梯度鏈實現階梯式切換，降低峰值力並允許快速氣動重置復原。</p>
+          <div class="card-footer">
+            
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43068945/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧬</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>動脈粥狀硬化中DNA條碼與細胞衰老：血管平滑肌細胞世系追蹤與未來衰老療法潛力</h3>
+          <p class="journal-source">Vascular pharmacology</p>
+          <p>論述DNA條碼作為標記獨立的世系追蹤策略，可解決血管平滑肌細胞在粥狀硬化中表型轉換與身份喪失的問題，並結合單細胞與空間轉錄組為衰老標的治療提供新方向。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43068791/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💾</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>奈米記憶體中ZrO2/MXene-聚合物異質結界面工程與受控離子遷移</h3>
+          <p class="journal-source">Journal of colloid and interface science</p>
+          <p>透過ZrO2/MXene-聚合物雜交界面工程調控離子遷移，實現奈米記憶體可靠電阻切換，超過3000個連續電壓脈衝穩定運作且保留時間超過50,000秒，MNIST識別準確率達89.13%。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43068531/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">👁️</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>角膜屈光手術誘發散光向量分析及其在環狀人工晶体規劃中的分離與意涵</h3>
+          <p class="journal-source">American Journal of Ophthalmology</p>
+          <p>本篇為預出版摘要，無可用摘要內容。</p>
+          <div class="card-footer">
+            
+            <a href="https://doi.org/10.1016/j.ajo.2026.10.025" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>血友病治療轉換之醫師與患者認知差異配對調查（重複條目）</h3>
+          <p class="journal-source">Haemophilia : the official journal of the World Federation of Hemophilia</p>
+          <p>透過配對分析發現日本血友病患者與其主治醫師在治療轉換障礙認知上存在顯著差異，患者認為實際治療負擔更重，且渴望更大程度參與治療決策。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43069660/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩸</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>免疫性血小板減少症成人血小板生成素受體激動劑治療順序與反應：轉換、重新暴露與組合策略</h3>
+          <p class="journal-source">Expert review of hematology</p>
+          <p>批判性回顧成人免疫性血小板減少症中血小板生成素受體激動劑的順序治療證據，包括跨藥物切換、反應喪失與重新捕捉、同藥物重新暴露及組合策略，並提出分層縱向報告框架。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43073016/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">📊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>經濟評估與健康技術評估中治療順序評估方法之比較</h3>
+          <p class="journal-source">Value in health : the journal of the International Society for Pharmacoeconomics and Outcomes Research</p>
+          <p>比較九種結構治療順序決策問題的方法，發現成本效益比會隨後續治療順序而顯著變化，建議經濟評估與健康技術評估應明確考慮治療順序並進行敏感性分析。</p>
+          <div class="card-footer">
+            <span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43072694/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🫁</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>居家非侵入性呼吸機跨設備轉移呼吸機參數：實際挑戰</h3>
+          <p class="journal-source">Respiratory medicine</p>
+          <p>比較常用居家非侵入性呼吸機的觸發靈敏度、上升時間與循環關閉標準技術實作差異，發現相同參數數值在不同設備間不等效，轉換設備時需個別重新評估患者-呼吸機互動。</p>
+          <div class="card-footer">
+            <span class="tag">住院照護</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43072569/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧪</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>連接保留機制與催化輸出：受端粒酶啟發的控制應用</h3>
+          <p class="journal-source">Bio Systems</p>
+          <p>提出光學模擬器模擬端粒酶保留機制與催化輸出，透過獨立波森相遇與階段相關保護機率建立指數離去規律，並探討校準不確定度對批次覆蓋率的影響。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43072472/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>印度2型糖尿病或肥胖成人合成與參考西格魯肽強度與限制：系統性回顧與關鍵評估</h3>
+          <p class="journal-source">Diabetes & metabolic syndrome</p>
+          <p>系統性回顧八項印度III期試驗比較合成與參考西格魯肽，結果顯示短期療效一般得到支持，但未確立固定劑量或長期等效性、裝置等效性、切換安全性或心腎腎結局等效性。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span><span class="tag">系統性回顧</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43072348/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>雙模因子跳耦霍普菲爾德網路中二維多捲捲混沌與共存切換的複製</h3>
+          <p class="journal-source">Neural networks : the official journal of the International Neural Network Society</p>
+          <p>提出雙模因子耦合的5維霍普菲爾德神經網路，透過平衡結構與雅可比矩陣特徵值分析，說明二維多捲捲複製吸引子陣列的組織方式與可程式化共存吸引子家族的切換機制，並以DSP硬體驗證。</p>
+          <div class="card-footer">
+            <span class="tag">神經生物學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43072144/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💊</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>使用固定胰蛋白酶的自動柱切換LC-MS/MS方法快速定量人血清中的鵝盧單抗</h3>
+          <p class="journal-source">Journal of chromatography. B, Analytical technologies in the biomedical and life sciences</p>
+          <p>開發自動柱切換LC-MS/MS方法定量血清中鵝盧單抗，動態範圍1-140 µg/mL，驗證顯示可接受的分析性能，可支持治療藥物監測。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43072040/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🫁</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>過敏性氣道發炎中JAK/STAT訊號傳導：從效應細胞激素到致病免疫記憶與疾病修飾治療</h3>
+          <p class="journal-source">Expert review of clinical immunology</p>
+          <p>綜述JAK/STAT訊號路徑如何產生急性發炎並建立致病免疫記憶，主張吸入式JAK抑制劑應報告局部p-STAT6抑制，且疾病修飾應以停藥後無復發間隔定義而非治療中症狀評分。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43069601/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🧠</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>全腦動態與第1級自閉症譜系障礙的認知靈活性：基於隱藏馬可夫模型的研究</h3>
+          <p class="journal-source">Journal of autism and developmental disorders</p>
+          <p>利用靜態功能性MRI與隱藏馬可夫模型分析腦網路動態，發現ASD兒童腦態切換率降低且額葉頂葉網路激活非對稱，這些變化與認知靈活性困難及重複行為嚴重度顯著相關。</p>
+          <div class="card-footer">
+            <span class="tag">神經影像</span><span class="tag">生物標記</span><span class="tag">兒童青少年</span><span class="tag">評估診斷</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43071312/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">⚠️</span>
+            <span class="utility-mid utility-sm">中</span>
+          </div>
+          <h3>區分嘗試自殺者與僅有自殺念頭者的DSM-5症狀：以症狀層級機器學習模型為基礎的研究</h3>
+          <p class="journal-source">Archives of suicide research : official journal of the International Academy for Suicide Research</p>
+          <p>透過彈性網路邏輯迴歸與交叉驗證，從665項DSM-5症狀中找出能區分過去12個月自殺未遂者與僅有自殺念頭者的關鍵症狀，發現解離性身份障礙與邊界型人格障礙等症狀為重要預測因子，模型AUC達0.84，提示症狀層級評估可提升自殺風險識別精準度。</p>
+          <div class="card-footer">
+            <span class="tag">自傷自殺</span><span class="tag">解離症</span><span class="tag">評估診斷</span><span class="tag">成人精神醫學</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070236/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🫀</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>從傳統腎素血管緊張素系統抑制劑轉至血管緊張素受體-內肽酶抑制劑對慢性腎臟病患者腎功能影響：回顧性探索性分析（重複條目）</h3>
+          <p class="journal-source">Clinical and experimental nephrology</p>
+          <p>回顧分析107例慢性腎臟病患者從RAS抑制劑轉用ARNI後12個月的腎功能變化，結果顯示eGFR與尿蛋白/肌酸酐比值無顯著變化，但血壓顯著下降。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43071235/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>乙型肝炎病毒抗體組合療法第52週耐藥性分析：第2期研究（重複條目）</h3>
+          <p class="journal-source">The Journal of infectious diseases</p>
+          <p>評估卡舍帕韋與兩種廣效中和抗體每半年一次皮下注射治療HIV-1的耐藥性，發現切換回口服療法後病毒RNA皆能重新抑制，支持該組合療法持續開發。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43069510/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🦠</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>克隆氏病患者從烏司坦單抗轉至米利珠單抗的療效與安全性：VIVID-2擴展研究結果（重複條目）</h3>
+          <p class="journal-source">The American journal of gastroenterology</p>
+          <p>評估從烏司坦單抗內鏡非反應者轉用米利珠單抗治療中度至重度克隆氏病的結果，第52週內鏡反應率達41.4%-46.2%，安全性總體符合已知特徵。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070883/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">🩺</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>自身免疫疾病患者中鈣調磷酸酶抑制劑疼痛綜合徵：雙刃劍（重複條目）</h3>
+          <p class="journal-source">Journal of human immunity</p>
+          <p>報告兩例自身免疫疾病患者使用鈣調磷酸酶抑制劑後出現深層周邊骨骼疼痛，藥物停用後疼痛完全緩解，提醒臨床醫師注意此罕見併發症。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span><span class="tag">案例報告</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070570/" target="_blank">PubMed →</a>
+          </div>
+        </div>
+        <div class="news-card">
+          <div class="card-header-row">
+            <span class="emoji-sm">💉</span>
+            <span class="utility-low utility-sm">低</span>
+          </div>
+          <h3>轉至加拉達昔單抗治療遺傳性血管水腫患者的早期臨床經驗：長期預防新療法（重複條目）</h3>
+          <p class="journal-source">Journal of human immunity</p>
+          <p>審計13例遺傳性血管水腫患者轉用加拉達昔單抗後的早期臨床經驗，結果顯示除1例外皆達到疾病控制，且多數患者幾乎無發作。</p>
+          <div class="card-footer">
+            <span class="tag">藥物治療</span>
+            <a href="https://pubmed.ncbi.nlm.nih.gov/43070532/" target="_blank">PubMed →</a>
+          </div>
+        </div></div>
+
+  
+
+  
+
+  <div class="links-banner">
+    <a href="https://www.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">🏥</span>
+      <span class="link-info">
+        <span class="link-name">李政洋身心診所首頁</span>
+        <span class="link-desc">專業身心科醫療服務</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://blog.leepsyclinic.com/" class="link-card" target="_blank">
+      <span class="link-icon">📧</span>
+      <span class="link-info">
+        <span class="link-name">訂閱電子報</span>
+        <span class="link-desc">接收最新心理健康資訊</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+    <a href="https://buymeacoffee.com/CYlee" class="link-card" target="_blank">
+      <span class="link-icon">☕</span>
+      <span class="link-info">
+        <span class="link-name">Buy Me a Coffee</span>
+        <span class="link-desc">支持本計畫持續運作</span>
+      </span>
+      <span class="link-arrow">→</span>
+    </a>
+  </div>
+
+  <footer>
+    <span>資料來源：PubMed · 分析模型：nvidia/nemotron-3.5-super-vl-120b-a12b</span>
+    <span><a href="https://github.com/u8901006/did-brain">GitHub</a></span>
+  </footer>
+</div>
+</body>
+</html>
